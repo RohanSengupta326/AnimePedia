@@ -33,7 +33,7 @@ class _SeriesViewState extends State<SeriesView> {
                 maxLines: 2,
                 softWrap: true,
                 widget.title,
-                style: TextStyle(
+                style: const TextStyle(
                   color: /* Colors.white */ Colors.black,
                   fontSize: 12,
                   fontWeight: FontWeight.w300,
