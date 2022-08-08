@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ErrorPage extends StatelessWidget {
-  final Function fetch;
-  final String internetError;
-  ErrorPage(this.fetch, this.internetError);
+  final void Function([bool?]) fetch;
+  final String errorMsg;
+  ErrorPage(this.fetch, this.errorMsg);
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +35,7 @@ class ErrorPage extends StatelessWidget {
               height: 10,
             ),
             Text(
-              internetError.isEmpty
-                  ? 'Sorry, could not load data at this moment\n               Please try after some time'
-                  : 'Unable to connect to the internet',
+              errorMsg,
               style: TextStyle(
                 color: Colors.white60,
                 fontWeight: FontWeight.w300,
@@ -52,9 +50,9 @@ class ErrorPage extends StatelessWidget {
                   backgroundColor: MaterialStateProperty.all(Colors.white)),
               onPressed: () {
                 // logic to refresh app
-                fetch();
+                fetch(true);
               },
-              child: Text(
+              child: const Text(
                 'Try Again',
                 style: TextStyle(
                   color: Colors.black,

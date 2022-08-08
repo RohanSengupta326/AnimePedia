@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:convert';
 
@@ -9,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 class SeriesData extends GetxController {
+  RxBool isLoading = false.obs;
+  RxBool isLoading2 = false.obs;
   int allAnimeCount = 10;
   List<Series> _items = [];
   List<Series> get items {
@@ -16,6 +17,11 @@ class SeriesData extends GetxController {
   }
 
   Future<void> fetchData(String pageNo) async {
+    // when fetching from beginning make sure list is empty so prev things dont come
+    if (pageNo == '1') {
+      _items = [];
+    }
+
     // at one call we fetch 10 items, so if this count < 10, end of list, fetch no more
     if (allAnimeCount < 10) {
       return;
@@ -29,39 +35,54 @@ class SeriesData extends GetxController {
       urL,
     );
     try {
+      if (pageNo == '1') {
+        isLoading.value = true;
+      } else {
+        isLoading2.value = true;
+      }
+
       final response = await http.get(url);
       // log(response.statusCode.toString());
 
-      final extractedData = json.decode(response.body)['data']; // list
+      final Map<String, dynamic>? extractedData =
+          json.decode(response.body); // list
 
-      // Map<String, List<Map<String, dynamic>>>
       if (extractedData == null) {
         // Get.snackbar('Error', 'Could not load data');
         return;
       }
 
       // how many items got fetched , if none, return
-      allAnimeCount = extractedData.length;
+      allAnimeCount = extractedData['data'].length;
       if (allAnimeCount == 0) {
         return;
       }
 
-      for (int i = 0; i < extractedData.length; i++) {
-        final Map<String, dynamic> favoriteResponse = extractedData[i];
+      for (int i = 0; i < extractedData['data'].length; i++) {
+        final Map<String, dynamic> recievedData = extractedData['data'][i];
         // first map
         _items.add(
           Series(
-            image: favoriteResponse['images']['jpg']['image_url'],
-            title: favoriteResponse['title'],
+            image: recievedData['images']['jpg']['image_url'],
+            title: recievedData['title'],
           ),
         );
       }
+
+      isLoading.value = false;
+      isLoading2.value = false;
+      return;
     } on SocketException catch (_) {
       // no internet
+      isLoading.value = false;
+
+      isLoading2.value = false;
       throw 'Could not connect to the internet';
     } catch (_) {
       // print('caught error : $error');
-      throw 'Something Went Wrong!\nPlease try again later!';
+      isLoading.value = false;
+      isLoading2.value = false;
+      throw 'Something Went Wrong! Please try again later!';
     }
   }
 

@@ -13,36 +13,26 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final controller = Get.put(SeriesData());
-  RxBool _isLoading = false.obs;
+  // RxBool _isLoading = false.obs;
   // when app starts, loader at center
-  RxBool _isLoading2 = false.obs;
+  // RxBool _isLoading2 = false.obs;
   // loader when fetching more data at the bottom
-  bool isMorePageFetchError = false;
+
   String _error = '';
   int i = 1;
   int cols = GetPlatform.isDesktop ? 4 : 2;
 
-  void fetch() {
-    if (i == 1) {
-      _isLoading.value = true;
-      // to show first screen loader in the center
+  void fetch([bool? onInternetGone]) {
+    if (onInternetGone != null && onInternetGone == true) {
+      i = 1;
     }
-    _isLoading2.value = true;
-    // to show lazy loader at the bottom
 
+    // when trying to fetch again, make error empty
+    _error = '';
+    // to show lazy loader at the bottom
     controller.fetchData(i.toString()).catchError((errorMsg) {
-      if (i > 1) {
-        isMorePageFetchError = true;
-      }
       _error = errorMsg;
-    }).then(
-      (_) {
-        if (i == 1) {
-          _isLoading.value = false;
-        }
-        _isLoading2.value = false;
-      },
-    );
+    });
   }
 
   @override
@@ -53,7 +43,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget getBody() {
-    return _isLoading.value
+    return controller.isLoading.value
         ? Center(
             child: Container(
               height: 100,
@@ -78,7 +68,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           )
-        : _error.isNotEmpty && isMorePageFetchError == false
+        : _error.isNotEmpty
             ? ErrorPage(fetch, _error)
             // to show when data cant get loaded
             : RefreshIndicator(
@@ -88,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                   return fetch();
                 },
                 child: LazyLoadScrollView(
-                  isLoading: _isLoading2.value,
+                  isLoading: controller.isLoading2.value,
                   onEndOfPage: () {
                     i++;
                     return fetch();
@@ -105,17 +95,11 @@ class _HomePageState extends State<HomePage> {
                         return SeriesView(controller.items[index].image,
                             controller.items[index].title);
                       } else {
-                        return Center(
-                          child: isMorePageFetchError == false
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                )
-                              : Text(_error,
-                                  style: const TextStyle(
-                                    color: Colors.white60,
-                                    fontWeight: FontWeight.w300,
-                                  )),
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
                         );
                       }
                     },
