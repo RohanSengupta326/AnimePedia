@@ -56,28 +56,29 @@ class _HomePageState extends State<HomePage> {
     return _isLoading.value
         ? Center(
             child: Container(
-            height: 100,
-            width: 100,
-            child: Column(
-              children: const [
-                CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2,
-                ),
-                SizedBox(
-                  height: 2,
-                ),
-                Text(
-                  'wait a moment..',
-                  style: TextStyle(
-                    color: Colors.white38,
-                    fontWeight: FontWeight.w300,
+              height: 100,
+              width: 100,
+              child: Column(
+                children: const [
+                  CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 2,
                   ),
-                )
-              ],
+                  SizedBox(
+                    height: 2,
+                  ),
+                  Text(
+                    'wait a moment..',
+                    style: TextStyle(
+                      color: Colors.white38,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  )
+                ],
+              ),
             ),
-          ))
-        : _error.isNotEmpty
+          )
+        : _error.isNotEmpty && isMorePageFetchError == false
             ? ErrorPage(fetch, _error)
             // to show when data cant get loaded
             : RefreshIndicator(
@@ -100,7 +101,10 @@ class _HomePageState extends State<HomePage> {
                         crossAxisSpacing: 8,
                         crossAxisCount: cols),
                     itemBuilder: (ctx, index) {
-                      if (index + 1 == controller.items.length) {
+                      if (index < controller.items.length) {
+                        return SeriesView(controller.items[index].image,
+                            controller.items[index].title);
+                      } else {
                         return Center(
                           child: isMorePageFetchError == false
                               ? const CircularProgressIndicator(
@@ -114,27 +118,8 @@ class _HomePageState extends State<HomePage> {
                                   )),
                         );
                       }
-                      if (index + 2 == controller.items.length) {
-                        return Center(
-                          child: isMorePageFetchError == false
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                )
-                              : Text(
-                                  _error,
-                                  style: const TextStyle(
-                                    color: Colors.white60,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                        );
-                      }
-
-                      return SeriesView(controller.items[index].image,
-                          controller.items[index].title);
                     },
-                    itemCount: controller.items.length,
+                    itemCount: controller.items.length + 1,
                   ),
                 ),
               );

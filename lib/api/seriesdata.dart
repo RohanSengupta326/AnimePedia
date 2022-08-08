@@ -9,12 +9,18 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 class SeriesData extends GetxController {
+  int allAnimeCount = 10;
   List<Series> _items = [];
   List<Series> get items {
     return [..._items];
   }
 
   Future<void> fetchData(String pageNo) async {
+    // at one call we fetch 10 items, so if this count < 10, end of list, fetch no more
+    if (allAnimeCount < 10) {
+      return;
+    }
+
     var apiCall = ApiKey().urL;
 
     String urL = '$apiCall$pageNo'; // your api here
@@ -24,13 +30,19 @@ class SeriesData extends GetxController {
     );
     try {
       final response = await http.get(url);
-      log(response.statusCode.toString());
+      // log(response.statusCode.toString());
 
       final extractedData = json.decode(response.body)['data']; // list
 
       // Map<String, List<Map<String, dynamic>>>
       if (extractedData == null) {
         // Get.snackbar('Error', 'Could not load data');
+        return;
+      }
+
+      // how many items got fetched , if none, return
+      allAnimeCount = extractedData.length;
+      if (allAnimeCount == 0) {
         return;
       }
 
