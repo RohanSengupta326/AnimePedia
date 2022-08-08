@@ -1,13 +1,32 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import 'package:series/general_utils/generalUtils.dart';
+import 'package:get/get.dart';
+import 'package:series/screens/animeDetailPage.dart';
 
 class SeriesView extends StatefulWidget {
-  final String image;
-  final String title;
+  final image;
+  final title;
+  final episodeLength;
+  final episodes;
+  final rating;
+  final startDate;
+  final endDate;
+  final status;
+  final synopsis;
+  final titleJapanese;
+  final trailerUrl;
 
-  SeriesView(this.image, this.title);
+  SeriesView(
+      {this.image,
+      this.title,
+      this.episodeLength,
+      this.episodes,
+      this.rating,
+      this.startDate,
+      this.endDate,
+      this.status,
+      this.synopsis,
+      this.titleJapanese,
+      this.trailerUrl});
   @override
   State<SeriesView> createState() => _SeriesViewState();
 }
@@ -27,13 +46,14 @@ class _SeriesViewState extends State<SeriesView> {
         borderRadius: BorderRadius.circular(10),
         child: GridTile(
           footer: GridTileBar(
-            backgroundColor: /* Color.fromARGB(255, 40, 40, 40) */ Colors.white,
+            backgroundColor: Colors.white,
             title: Center(
               child: Text(
+                widget.title ?? '', 
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 softWrap: true,
-                widget.title,
+                
                 style: const TextStyle(
                   color: /* Colors.white */ Colors.black,
                   fontSize: 12,
@@ -45,11 +65,33 @@ class _SeriesViewState extends State<SeriesView> {
           ),
           child: GestureDetector(
             // anime details page
-            onTap: () {},
-            child: Image.network(
-              widget.image,
-              fit: BoxFit.fill,
-            ),
+            onTap: () {
+              Get.to(AnimeDetailPage(
+                title: widget.title,
+                image: widget.image,
+                endDate: widget.endDate,
+                episodeLength: widget.episodeLength,
+                episodes: widget.episodes,
+                rating: widget.rating,
+                startDate: widget.startDate,
+                status: widget.status,
+                synopsis: widget.synopsis,
+                titleJapanese: widget.titleJapanese,
+                trailerUrl: widget.trailerUrl,
+              ));
+            },
+            child: widget.image == null
+                ? const Text(
+                    'No Preview Available',
+                    style: TextStyle(
+                      color: Colors.white38,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  )
+                : Image.network(
+                    widget.image,
+                    fit: BoxFit.fill,
+                  ),
           ),
         ),
       ),

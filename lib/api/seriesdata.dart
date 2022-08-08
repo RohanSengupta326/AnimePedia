@@ -65,6 +65,15 @@ class SeriesData extends GetxController {
           Series(
             image: recievedData['images']['jpg']['image_url'],
             title: recievedData['title'],
+            trailerUrl: recievedData['trailer']['url'],
+            titleJapanese: recievedData['title_japanese'],
+            synopsis: recievedData['synopsis'],
+            status: recievedData['status'],
+            episodes: recievedData['episodes'],
+            episodeLength: recievedData['duration'],
+            rating: recievedData['rating'],
+            startDate: recievedData['aired']['from'],
+            endDate: recievedData['aired']['to'],
           ),
         );
       }

@@ -13,20 +13,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final controller = Get.put(SeriesData());
-  // RxBool _isLoading = false.obs;
-  // when app starts, loader at center
-  // RxBool _isLoading2 = false.obs;
-  // loader when fetching more data at the bottom
-
   String _error = '';
   int i = 1;
   int cols = GetPlatform.isDesktop ? 4 : 2;
 
   void fetch([bool? onInternetGone]) {
+    // if trying again after internet gone, start from first page
     if (onInternetGone != null && onInternetGone == true) {
       i = 1;
     }
-
     // when trying to fetch again, make error empty
     _error = '';
     // to show lazy loader at the bottom
@@ -45,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   Widget getBody() {
     return controller.isLoading.value
         ? Center(
-            child: Container(
+            child: SizedBox(
               height: 100,
               width: 100,
               child: Column(
@@ -92,8 +87,19 @@ class _HomePageState extends State<HomePage> {
                         crossAxisCount: cols),
                     itemBuilder: (ctx, index) {
                       if (index < controller.items.length) {
-                        return SeriesView(controller.items[index].image,
-                            controller.items[index].title);
+                        return SeriesView(
+                          image: controller.items[index].image,
+                          title: controller.items[index].title,
+                          endDate: controller.items[index].endDate,
+                          episodeLength: controller.items[index].episodeLength,
+                          episodes: controller.items[index].episodes,
+                          rating: controller.items[index].rating,
+                          startDate: controller.items[index].startDate,
+                          status: controller.items[index].status,
+                          synopsis: controller.items[index].synopsis,
+                          titleJapanese: controller.items[index].titleJapanese,
+                          trailerUrl: controller.items[index].trailerUrl,
+                        );
                       } else {
                         return const Center(
                           child: CircularProgressIndicator(
