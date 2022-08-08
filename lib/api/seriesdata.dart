@@ -1,23 +1,20 @@
+import 'dart:developer';
 import 'dart:io';
-
-import 'package:http/http.dart' as http;
-import '../models/series.dart';
 import 'dart:convert';
-import 'package:get/get.dart';
+
+import '../models/series.dart';
 import './apiKey.dart';
 
-class SeriesData extends GetxController {
-  var internetError = '';
-  List<Series> _items = [];
-  bool isError = false;
-  bool isMorePageFetchError = false;
+import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
 
+class SeriesData extends GetxController {
+  List<Series> _items = [];
   List<Series> get items {
     return [..._items];
   }
 
   Future<void> fetchData(String pageNo) async {
-    isError = false;
     var apiCall = ApiKey().urL;
 
     String urL = '$apiCall$pageNo'; // your api here
@@ -27,7 +24,7 @@ class SeriesData extends GetxController {
     );
     try {
       final response = await http.get(url);
-      print(response.statusCode);
+      log(response.statusCode.toString());
 
       final extractedData = json.decode(response.body)['data']; // list
 
@@ -47,20 +44,16 @@ class SeriesData extends GetxController {
           ),
         );
       }
-    } on SocketException catch (error) {
+    } on SocketException catch (_) {
       // no internet
-      double.parse(pageNo) > 1 ? isMorePageFetchError = true : isError = true;
-      internetError = error.message;
-      return;
-    } catch (error) {
+      throw 'Could not connect to the internet';
+    } catch (_) {
       // print('caught error : $error');
-
-      isError = true;
-      return;
+      throw 'Something Went Wrong!\nPlease try again later!';
     }
   }
 
-  refresh() {
+  void pageRefresh() {
     _items = [];
   }
 }

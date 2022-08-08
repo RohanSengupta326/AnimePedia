@@ -12,24 +12,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ScrollController _scrollController = ScrollController();
   final controller = Get.put(SeriesData());
-
-  var _isLoading = false.obs;
-  var _isLoading2 = false.obs;
-  var isError = false;
-
-  var i = 1;
-
+  RxBool _isLoading = false.obs;
+  // when app starts, loader at center
+  RxBool _isLoading2 = false.obs;
+  // loader when fetching more data at the bottom
+  bool isMorePageFetchError = false;
+  String _error = '';
+  int i = 1;
   int cols = GetPlatform.isDesktop ? 4 : 2;
 
-  // _fetchAgain() {
-  //   _isLoading2.value = true;
-  //   controller.fetchData((++i).toString()).then((_) {
-  //     _isLoading2.value = false;
-  //   });
-  // }
-  var _error;
   void fetch() {
     if (i == 1) {
       _isLoading.value = true;
@@ -38,7 +30,12 @@ class _HomePageState extends State<HomePage> {
     _isLoading2.value = true;
     // to show lazy loader at the bottom
 
-    controller.fetchData(i.toString()).then(
+    controller.fetchData(i.toString()).catchError((errorMsg) {
+      if (i > 1) {
+        isMorePageFetchError = true;
+      }
+      _error = errorMsg;
+    }).then(
       (_) {
         if (i == 1) {
           _isLoading.value = false;
@@ -51,16 +48,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     fetch();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        i++;
-        fetch();
-        // screen bottom to call fetch function again to fetch second page data
-        // print('reached');
-      }
-    });
-
+    // first fetch on app start
     super.initState();
   }
 
@@ -89,12 +77,12 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ))
-        : controller.isError == true
-            ? ErrorPage(fetch, controller.internetError)
+        : _error.isNotEmpty
+            ? ErrorPage(fetch, _error)
             // to show when data cant get loaded
             : RefreshIndicator(
                 onRefresh: () async {
-                  controller.refresh();
+                  controller.pageRefresh();
                   i = 1;
                   return fetch();
                 },
@@ -105,7 +93,6 @@ class _HomePageState extends State<HomePage> {
                     return fetch();
                   },
                   child: GridView.builder(
-                    controller: _scrollController,
                     padding: const EdgeInsets.all(10),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         childAspectRatio: 2 / 3,
@@ -115,14 +102,13 @@ class _HomePageState extends State<HomePage> {
                     itemBuilder: (ctx, index) {
                       if (index + 1 == controller.items.length) {
                         return Center(
-                          child: controller.isMorePageFetchError == false
+                          child: isMorePageFetchError == false
                               ? const CircularProgressIndicator(
                                   color: Colors.white,
                                   strokeWidth: 2,
                                 )
-                              : const Text(
-                                  'Unable to fetch more data.\nPlease check your internet connection',
-                                  style: TextStyle(
+                              : Text(_error,
+                                  style: const TextStyle(
                                     color: Colors.white60,
                                     fontWeight: FontWeight.w300,
                                   )),
@@ -130,14 +116,14 @@ class _HomePageState extends State<HomePage> {
                       }
                       if (index + 2 == controller.items.length) {
                         return Center(
-                          child: controller.isMorePageFetchError == false
+                          child: isMorePageFetchError == false
                               ? const CircularProgressIndicator(
                                   color: Colors.white,
                                   strokeWidth: 2,
                                 )
-                              : const Text(
-                                  'Unable to fetch more data.\nPlease check your internet connection',
-                                  style: TextStyle(
+                              : Text(
+                                  _error,
+                                  style: const TextStyle(
                                     color: Colors.white60,
                                     fontWeight: FontWeight.w300,
                                   ),
