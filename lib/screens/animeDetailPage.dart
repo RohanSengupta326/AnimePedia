@@ -77,7 +77,7 @@ class AnimeDetailPage extends StatelessWidget {
                     width: 15,
                   ),
                   Expanded(
-                    child: Container(
+                    child: SizedBox(
                       height: 250,
                       child: Column(
                         children: [
@@ -86,7 +86,7 @@ class AnimeDetailPage extends StatelessWidget {
                             child: SizedBox(
                               child: RichText(
                                 text: TextSpan(
-                                  text: title,
+                                  text: title ?? '',
                                   style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
@@ -96,31 +96,7 @@ class AnimeDetailPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 10,
-                          ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: SizedBox(
-                              child: RichText(
-                                text: TextSpan(
-                                  text: 'Japanese : ',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: titleJapanese,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
+                            height: 20,
                           ),
                           Align(
                             alignment: Alignment.topLeft,
@@ -133,7 +109,9 @@ class AnimeDetailPage extends StatelessWidget {
                                       color: Colors.green),
                                   children: <TextSpan>[
                                     TextSpan(
-                                      text: rating.toString(),
+                                      text: rating == null
+                                          ? ''
+                                          : rating.toString(),
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white),
@@ -144,7 +122,7 @@ class AnimeDetailPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 15,
                           ),
                           Align(
                             alignment: Alignment.topLeft,
@@ -157,7 +135,9 @@ class AnimeDetailPage extends StatelessWidget {
                                       color: Colors.green),
                                   children: <TextSpan>[
                                     TextSpan(
-                                      text: episodes.toString(),
+                                      text: episodes == null
+                                          ? ''
+                                          : episodes.toString(),
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white),
@@ -168,7 +148,7 @@ class AnimeDetailPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 15,
                           ),
                           Align(
                             alignment: Alignment.topLeft,
@@ -181,9 +161,9 @@ class AnimeDetailPage extends StatelessWidget {
                                       color: Colors.green),
                                   children: <TextSpan>[
                                     TextSpan(
-                                      text: episodeLength
-                                          .toString()
-                                          .substring(0, 6),
+                                      text: episodeLength == null
+                                          ? ''
+                                          : episodeLength.toString(),
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white),
@@ -194,7 +174,7 @@ class AnimeDetailPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 15,
                           ),
                           Align(
                             alignment: Alignment.topLeft,
@@ -207,7 +187,7 @@ class AnimeDetailPage extends StatelessWidget {
                                       color: Colors.green),
                                   children: <TextSpan>[
                                     TextSpan(
-                                      text: status,
+                                      text: status ?? '',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white),
@@ -218,7 +198,7 @@ class AnimeDetailPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 15,
                           ),
                           Align(
                             alignment: Alignment.topLeft,
@@ -260,13 +240,37 @@ class AnimeDetailPage extends StatelessWidget {
                 child: SizedBox(
                   child: RichText(
                     text: TextSpan(
+                      text: 'Japanese Name : ',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.green),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: titleJapanese ?? '',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: SizedBox(
+                  child: RichText(
+                    text: TextSpan(
                       text: 'Start Date : ',
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.green),
                       children: <TextSpan>[
                         TextSpan(
-                          text: DateFormat('dd MMMM, yyy')
-                              .format(DateTime.parse(startDate)),
+                          text: startDate == null
+                              ? ''
+                              : DateFormat('dd MMMM, yyy')
+                                  .format(DateTime.parse(startDate)),
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.white),
                         ),
@@ -288,10 +292,14 @@ class AnimeDetailPage extends StatelessWidget {
                           fontWeight: FontWeight.bold, color: Colors.green),
                       children: <TextSpan>[
                         TextSpan(
-                          text: status == 'Finished Airing'
-                              ? DateFormat('dd MMMM, yyy')
-                                  .format(DateTime.parse(endDate))
-                              : 'Ongoing',
+                          text: status == null
+                              ? ''
+                              : status == 'Finished Airing'
+                                  ? endDate == null
+                                      ? ''
+                                      : DateFormat('dd MMMM, yyy')
+                                          .format(DateTime.parse(endDate))
+                                  : 'Ongoing',
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.white),
                         ),
@@ -313,7 +321,7 @@ class AnimeDetailPage extends StatelessWidget {
                           fontWeight: FontWeight.bold, color: Colors.green),
                       children: <TextSpan>[
                         TextSpan(
-                          text: synopsis,
+                          text: synopsis ?? '',
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.white),
                         ),

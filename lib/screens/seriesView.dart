@@ -57,7 +57,7 @@ class _SeriesViewState extends State<SeriesView> {
                 style: const TextStyle(
                   color: /* Colors.white */ Colors.black,
                   fontSize: 12,
-                  fontWeight: FontWeight.w300,
+                  fontWeight: FontWeight.w500,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
