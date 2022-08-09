@@ -29,18 +29,14 @@ class AnimeDetailPage extends StatelessWidget {
       this.titleJapanese,
       this.trailerUrl});
 
-  void gotToUrl() async {
-    final Uri launchUri = Uri(
-      scheme: 'https',
-      path: trailerUrl,
-    );
-    if (await canLaunchUrl(launchUri)) {
-      await launchUrl(
-        launchUri,
-        webOnlyWindowName: '_self',
-      );
-    } else {
-      throw 'Cant open link';
+  Future<void> _launchUrl() async {
+    final Uri url = Uri.parse(trailerUrl);
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+      // to open in youtube
+    )) {
+      throw 'Could not launch $url';
     }
   }
 
@@ -48,9 +44,10 @@ class AnimeDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.amber,
         title: Text(
           title,
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
@@ -71,14 +68,12 @@ class AnimeDetailPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   Expanded(
                     child: Container(
                       height: 250,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white)),
                       child: Column(
                         children: [
                           Align(
@@ -88,6 +83,7 @@ class AnimeDetailPage extends StatelessWidget {
                                 text: TextSpan(
                                   text: title,
                                   style: const TextStyle(
+                                      fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.amber),
                                 ),
@@ -232,7 +228,7 @@ class AnimeDetailPage extends StatelessWidget {
                                           color: Colors.green),
                                     ),
                                     GestureDetector(
-                                      onTap: () => gotToUrl(),
+                                      onTap: () => _launchUrl(),
                                       child: const Text(
                                         'here',
                                         style: TextStyle(

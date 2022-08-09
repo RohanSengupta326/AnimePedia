@@ -118,7 +118,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('AnimePedia')),
+      appBar: AppBar(
+        
+        backgroundColor: Colors.amber,
+        title: const Text(
+          'AnimePedia',
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        ),
+      ),
       body: Obx(
         () {
           return getBody();

@@ -4,6 +4,7 @@ import 'homepage.dart';
 import 'global.dart';
 // for snackbar without context
 
+
 void main() {
   runApp(MyApp());
 }
@@ -36,7 +37,7 @@ class _MyAppState extends State<MyApp> {
           secondary: Colors.white,
         ),
       ),
-      home:  HomePage(),
+      home: HomePage(),
     );
   }
 }
