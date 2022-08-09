@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:series/screens/searchPage.dart';
 
 import './api/seriesdata.dart';
 import './screens/seriesView.dart';
@@ -119,7 +120,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.to(SearchPage());
+            },
+            icon: const Icon(Icons.search),
+          ),
+        ],
         backgroundColor: Colors.amber,
         title: const Text(
           'AnimePedia',
