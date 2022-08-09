@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:series/api/seriesdata.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,7 +31,7 @@ class AnimeDetailPage extends StatelessWidget {
       this.trailerUrl});
 
   Future<void> _launchUrl() async {
-    final Uri url = Uri.parse(trailerUrl);
+    final Uri url = Uri.parse(trailerUrl ?? '');
     if (!await launchUrl(
       url,
       mode: LaunchMode.externalApplication,
@@ -50,9 +51,13 @@ class AnimeDetailPage extends StatelessWidget {
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 20.0,
+            right: 20,
+            left: 20,
+          ),
           child: Column(
             children: [
               Row(
@@ -229,9 +234,9 @@ class AnimeDetailPage extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       onTap: () => _launchUrl(),
-                                      child: const Text(
-                                        'here',
-                                        style: TextStyle(
+                                      child: Text(
+                                        trailerUrl == null ? '' : 'here',
+                                        style: const TextStyle(
                                             color: Colors.blue,
                                             decoration:
                                                 TextDecoration.underline),
@@ -246,7 +251,81 @@ class AnimeDetailPage extends StatelessWidget {
                   )
                 ],
               ),
-              Divider(),
+              const Divider(),
+              const SizedBox(
+                height: 15,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: SizedBox(
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Start Date : ',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.green),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: DateFormat('dd MMMM, yyy')
+                              .format(DateTime.parse(startDate)),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: SizedBox(
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'End Date : ',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.green),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: status == 'Finished Airing'
+                              ? DateFormat('dd MMMM, yyy')
+                                  .format(DateTime.parse(endDate))
+                              : 'Ongoing',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: SizedBox(
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Story Line : ',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.green),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: synopsis,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              const Divider(),
             ],
           ),
         ),
