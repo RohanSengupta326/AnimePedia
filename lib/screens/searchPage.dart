@@ -5,21 +5,33 @@ import 'package:series/models/series.dart';
 import 'package:series/screens/seriesView.dart';
 
 class SearchPage extends StatelessWidget {
+  TextEditingController searchController = TextEditingController();
+  RxString userQuery = ''.obs;
   final SeriesData controller = Get.find();
   List<Series> searchResult = [];
 
   searchAnime(String? query) {
+    searchResult.clear();
+
+    if (query == null) {
+      return;
+    }
+    userQuery.value = query;
     searchResult = controller.items.where((element) {
-      return element.title == query;
+      final title = element.title.toString().toLowerCase();
+      final userSearch = query.toLowerCase();
+
+      return title.contains(userSearch);
     }).toList();
 
-    print(searchResult.length);
-    print(searchResult[0].title);
+    print('SEARCH RESULT -- ${searchResult.length}');
+    print(searchResult.isNotEmpty
+        ? searchResult[searchResult.length - 1].title
+        : '');
   }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController searchController = TextEditingController();
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -45,37 +57,39 @@ class SearchPage extends StatelessWidget {
                   icon: const Icon(Icons.search, color: Colors.white),
                 ),
                 cursorColor: Colors.white,
-                onSubmitted: searchAnime(searchController.text),
+                onChanged: searchAnime,
               ),
-            ),
-            const SizedBox(
-              height: 30,
             ),
             Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.all(10),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 2 / 3,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    crossAxisCount: 2),
-                itemBuilder: (ctx, index) {
-                  return SeriesView(
-                    image: controller.items[index].image,
-                    title: controller.items[index].title,
-                    endDate: controller.items[index].endDate,
-                    episodeLength: controller.items[index].episodeLength,
-                    episodes: controller.items[index].episodes,
-                    rating: controller.items[index].rating,
-                    startDate: controller.items[index].startDate,
-                    status: controller.items[index].status,
-                    synopsis: controller.items[index].synopsis,
-                    titleJapanese: controller.items[index].titleJapanese,
-                    trailerUrl: controller.items[index].trailerUrl,
-                  );
-                },
-                itemCount: searchResult.length,
-              ),
+              child: Obx(() {
+                return userQuery.value.isEmpty
+                    ? const Center()
+                    : GridView.builder(
+                        padding: const EdgeInsets.all(10),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                childAspectRatio: 2 / 3,
+                                mainAxisSpacing: 8,
+                                crossAxisSpacing: 8,
+                                crossAxisCount: 2),
+                        itemBuilder: (ctx, index) {
+                          return SeriesView(
+                            image: searchResult[index].image,
+                            title: searchResult[index].title,
+                            endDate: searchResult[index].endDate,
+                            episodeLength: searchResult[index].episodeLength,
+                            episodes: searchResult[index].episodes,
+                            rating: searchResult[index].rating,
+                            startDate: searchResult[index].startDate,
+                            status: searchResult[index].status,
+                            synopsis: searchResult[index].synopsis,
+                            titleJapanese: searchResult[index].titleJapanese,
+                            trailerUrl: searchResult[index].trailerUrl,
+                          );
+                        },
+                        itemCount: searchResult.length,
+                      );
+              }),
             ),
           ],
         ),
