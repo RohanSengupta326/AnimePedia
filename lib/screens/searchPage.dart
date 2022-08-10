@@ -1,33 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:series/api/seriesdata.dart';
-import 'package:series/models/series.dart';
+import 'package:series/errorPage.dart';
 import 'package:series/screens/seriesView.dart';
 
 class SearchPage extends StatelessWidget {
+  final SeriesData userSearchController = Get.find();
   TextEditingController searchController = TextEditingController();
   RxString userQuery = ''.obs;
   final SeriesData controller = Get.find();
-  List<Series> searchResult = [];
+  RxBool isLoadingSearch = false.obs;
+  String _error = '';
 
   searchAnime(String? query) {
-    searchResult.clear();
+    /* userSearchController.searchResult.clear();
 
     if (query == null) {
       return;
     }
     userQuery.value = query;
-    searchResult = controller.items.where((element) {
+    userSearchController.searchResult = controller.items.where((element) {
       final title = element.title.toString().toLowerCase();
       final userSearch = query.toLowerCase();
 
       return title.contains(userSearch);
-    }).toList();
+    }).toList(); */
 
-    print('SEARCH RESULT -- ${searchResult.length}');
-    print(searchResult.isNotEmpty
-        ? searchResult[searchResult.length - 1].title
-        : '');
+    // print('SEARCH RESULT -- ${userSearchController.searchResult.length}');
+    // print(userSearchController.searchResult.isNotEmpty
+    //     ? userSearchController.searchResult[userSearchController.searchResult.length - 1].title
+    //     : '');
+
+    isLoadingSearch.value = true;
+    userSearchController.fetchUserSearch(query ?? '').catchError((errorMsg) {
+      _error = errorMsg.toString();
+    });
   }
 
   @override
@@ -58,37 +65,74 @@ class SearchPage extends StatelessWidget {
                 ),
                 cursorColor: Colors.white,
                 onChanged: searchAnime,
+                onSubmitted: searchAnime,
               ),
             ),
             Expanded(
               child: Obx(() {
-                return userQuery.value.isEmpty
-                    ? const Center()
-                    : GridView.builder(
-                        padding: const EdgeInsets.all(10),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: 2 / 3,
-                                mainAxisSpacing: 8,
-                                crossAxisSpacing: 8,
-                                crossAxisCount: 2),
-                        itemBuilder: (ctx, index) {
-                          return SeriesView(
-                            image: searchResult[index].image,
-                            title: searchResult[index].title,
-                            endDate: searchResult[index].endDate,
-                            episodeLength: searchResult[index].episodeLength,
-                            episodes: searchResult[index].episodes,
-                            rating: searchResult[index].rating,
-                            startDate: searchResult[index].startDate,
-                            status: searchResult[index].status,
-                            synopsis: searchResult[index].synopsis,
-                            titleJapanese: searchResult[index].titleJapanese,
-                            trailerUrl: searchResult[index].trailerUrl,
+                return userSearchController.isSearchLoading.value
+                    ? Center(
+                        child: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: Column(
+                            children: const [
+                              CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Text(
+                                'wait a moment..',
+                                style: TextStyle(
+                                  color: Colors.white38,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    : userSearchController.searchResult.isEmpty
+                        ? const Text('Search Something!')
+                        : GridView.builder(
+                            padding: const EdgeInsets.all(10),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 2 / 3,
+                                    mainAxisSpacing: 8,
+                                    crossAxisSpacing: 8,
+                                    crossAxisCount: 2),
+                            itemBuilder: (ctx, index) {
+                              return SeriesView(
+                                image: userSearchController
+                                    .searchResult[index].image,
+                                title: userSearchController
+                                    .searchResult[index].title,
+                                endDate: userSearchController
+                                    .searchResult[index].endDate,
+                                episodeLength: userSearchController
+                                    .searchResult[index].episodeLength,
+                                episodes: userSearchController
+                                    .searchResult[index].episodes,
+                                rating: userSearchController
+                                    .searchResult[index].rating,
+                                startDate: userSearchController
+                                    .searchResult[index].startDate,
+                                status: userSearchController
+                                    .searchResult[index].status,
+                                synopsis: userSearchController
+                                    .searchResult[index].synopsis,
+                                titleJapanese: userSearchController
+                                    .searchResult[index].titleJapanese,
+                                trailerUrl: userSearchController
+                                    .searchResult[index].trailerUrl,
+                              );
+                            },
+                            itemCount: userSearchController.searchResult.length,
                           );
-                        },
-                        itemCount: searchResult.length,
-                      );
               }),
             ),
           ],

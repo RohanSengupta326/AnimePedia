@@ -67,16 +67,16 @@ class _HomePageState extends State<HomePage> {
         : _error.isNotEmpty
             ? ErrorPage(fetch, _error)
             // to show when data cant get loaded
-            : RefreshIndicator(
-                onRefresh: () async {
-                  controller.pageRefresh();
-                  i = 1;
+            : LazyLoadScrollView(
+                isLoading: controller.isLoading2.value,
+                onEndOfPage: () {
+                  i++;
                   return fetch();
                 },
-                child: LazyLoadScrollView(
-                  isLoading: controller.isLoading2.value,
-                  onEndOfPage: () {
-                    i++;
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    controller.pageRefresh();
+                    i = 1;
                     return fetch();
                   },
                   child: GridView.builder(
