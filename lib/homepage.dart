@@ -17,6 +17,9 @@ class _HomePageState extends State<HomePage> {
   String _error = '';
   int i = 1;
   int cols = GetPlatform.isDesktop ? 4 : 2;
+  ScrollController scrollController = ScrollController();
+  RxBool showButton = false.obs;
+  // to show, go to top button or not
 
   void fetch([bool? onInternetGone]) {
     // if trying again after internet gone, start from first page
@@ -35,6 +38,17 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     fetch();
     // first fetch on app start
+
+    // when scrolled down , then show button to come up
+    scrollController.addListener(() {
+      double showOffSet = 10.0;
+
+      if (scrollController.offset > showOffSet) {
+        showButton.value = true;
+      } else {
+        showButton.value = false;
+      }
+    });
     super.initState();
   }
 
@@ -80,6 +94,8 @@ class _HomePageState extends State<HomePage> {
                     return fetch();
                   },
                   child: GridView.builder(
+                    controller: scrollController,
+                    // to get scrolling position and go to top when app name
                     padding: const EdgeInsets.all(10),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         childAspectRatio: 2 / 3,
@@ -129,9 +145,17 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         backgroundColor: Colors.amber,
-        title: const Text(
-          'AnimePedia',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        title: TextButton(
+          onPressed: () {
+            scrollController.animateTo(0,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.fastOutSlowIn);
+          },
+          child: const Text(
+            'AnimePedia',
+            style: TextStyle(
+                fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
         ),
       ),
       body: Obx(
@@ -139,6 +163,26 @@ class _HomePageState extends State<HomePage> {
           return getBody();
         },
       ),
+      floatingActionButton: Obx(() {
+        // when scrolled down a bit only then button shows
+        return AnimatedOpacity(
+          opacity: showButton.value ? 1 : 0,
+          duration: const Duration(seconds: 1),
+          child: FloatingActionButton(
+            onPressed: () {
+              scrollController.animateTo(0,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.fastOutSlowIn);
+            },
+            backgroundColor: Colors.amber,
+            elevation: 16,
+            child: const Icon(
+              Icons.arrow_upward,
+              color: Colors.white,
+            ),
+          ),
+        );
+      }),
     );
   }
 }

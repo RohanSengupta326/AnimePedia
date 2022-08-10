@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:series/api/seriesdata.dart';
-import 'package:series/errorPage.dart';
 import 'package:series/screens/seriesView.dart';
 import 'package:series/widgets/emptySearchPage.dart';
 import 'dart:async';
@@ -14,11 +13,10 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final SeriesData userSearchController = Get.find();
   TextEditingController searchController = TextEditingController();
-  RxString userQuery = ''.obs;
   final SeriesData controller = Get.find();
-  RxBool isLoadingSearch = false.obs;
   String _error = '';
   Timer? debouncer;
+  // to set timer for server each request
 
   @override
   void dispose() {
@@ -26,19 +24,28 @@ class _SearchPageState extends State<SearchPage> {
     super.dispose();
   }
 
+  // if user types fast , many server requests gets sent on top of another, so the recieved list is not appropriate
+  // and creates pressure on server
   void debounce(
     VoidCallback callback, {
     Duration duration = const Duration(milliseconds: 500),
+    // creates timer of 500 milliseconds
   }) {
     if (debouncer != null) {
+      // before 500 milliseconds server request wont be sent, so if another prev
+      // timer is not yet null means prev server request is not completed yet, so cancel prev request before sending
+      // and set new timer for next request
       debouncer!.cancel();
     }
 
     debouncer = Timer(duration, callback);
   }
 
+//  sends server request according to user search
   searchAnime(String query) {
     _error = '';
+    // empties the error variable before every server request else it will store the previous error and show error
+    // even if theres none
     debounce(() {
       userSearchController.fetchUserSearch(query).catchError((errorMsg) {
         _error = errorMsg.toString();
@@ -75,6 +82,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 cursorColor: Colors.white,
                 onChanged: searchAnime,
+                // on changing input by user everytime, this function is called
               ),
             ),
             Expanded(
@@ -105,12 +113,15 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       )
                     : _error.isNotEmpty
+                    // if no error
                         ? Text(_error)
                         : userSearchController.searchResult.isEmpty &&
                                 searchController.text.isEmpty
+                                // no input has been typed by user
                             ? EmptySearchPage('Search your favourite Anime!')
                             : userSearchController.searchResult.isEmpty &&
                                     searchController.text.isNotEmpty
+                                    // couldnt find typed content by user
                                 ? const Text('Sorry! Could not find any result')
                                 : GridView.builder(
                                     padding: const EdgeInsets.all(10),

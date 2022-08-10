@@ -104,10 +104,7 @@ class SeriesData extends GetxController {
 
   // FETCH DATA ACCORDING TO USER SEARCH
   Future<void> fetchUserSearch(String animeName) async {
-    if (animeName == '') {
-      _searchResult.clear();
-      return;
-    }
+    // before getting new suggestions delete prev suggestions
     _searchResult.clear();
 
     var apiCall = ApiKey().animeSearchUrl;
