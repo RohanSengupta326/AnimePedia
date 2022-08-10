@@ -24,24 +24,24 @@ class ErrorPage extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
-            Text(
+            const Text(
               'Ooops!!',
               style: TextStyle(fontSize: 20, color: Colors.white),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
               errorMsg,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white60,
                 fontWeight: FontWeight.w300,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             // try again button

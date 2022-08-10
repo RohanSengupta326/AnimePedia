@@ -158,11 +158,11 @@ class SeriesData extends GetxController {
       return;
     } on SocketException catch (_) {
       // no internet
-
-      throw 'Could not connect to the internet';
+      isSearchLoading.value = false;
+      throw 'Could not connect to the internet!';
     } catch (_) {
       // print('caught error : $error');
-
+      isSearchLoading.value = false;
       throw 'Something Went Wrong! Please try again later!';
     }
   }

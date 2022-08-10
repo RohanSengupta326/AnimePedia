@@ -3,37 +3,46 @@ import 'package:get/get.dart';
 import 'package:series/api/seriesdata.dart';
 import 'package:series/errorPage.dart';
 import 'package:series/screens/seriesView.dart';
+import 'package:series/widgets/emptySearchPage.dart';
+import 'dart:async';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
   final SeriesData userSearchController = Get.find();
   TextEditingController searchController = TextEditingController();
   RxString userQuery = ''.obs;
   final SeriesData controller = Get.find();
   RxBool isLoadingSearch = false.obs;
   String _error = '';
+  Timer? debouncer;
 
-  searchAnime(String? query) {
-    /* userSearchController.searchResult.clear();
+  @override
+  void dispose() {
+    debouncer?.cancel();
+    super.dispose();
+  }
 
-    if (query == null) {
-      return;
+  void debounce(
+    VoidCallback callback, {
+    Duration duration = const Duration(milliseconds: 500),
+  }) {
+    if (debouncer != null) {
+      debouncer!.cancel();
     }
-    userQuery.value = query;
-    userSearchController.searchResult = controller.items.where((element) {
-      final title = element.title.toString().toLowerCase();
-      final userSearch = query.toLowerCase();
 
-      return title.contains(userSearch);
-    }).toList(); */
+    debouncer = Timer(duration, callback);
+  }
 
-    // print('SEARCH RESULT -- ${userSearchController.searchResult.length}');
-    // print(userSearchController.searchResult.isNotEmpty
-    //     ? userSearchController.searchResult[userSearchController.searchResult.length - 1].title
-    //     : '');
-
-    isLoadingSearch.value = true;
-    userSearchController.fetchUserSearch(query ?? '').catchError((errorMsg) {
-      _error = errorMsg.toString();
+  searchAnime(String query) {
+    _error = '';
+    debounce(() {
+      userSearchController.fetchUserSearch(query).catchError((errorMsg) {
+        _error = errorMsg.toString();
+      });
     });
   }
 
@@ -42,6 +51,7 @@ class SearchPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               margin: const EdgeInsets.all(16),
@@ -65,7 +75,6 @@ class SearchPage extends StatelessWidget {
                 ),
                 cursorColor: Colors.white,
                 onChanged: searchAnime,
-                onSubmitted: searchAnime,
               ),
             ),
             Expanded(
@@ -95,44 +104,51 @@ class SearchPage extends StatelessWidget {
                           ),
                         ),
                       )
-                    : userSearchController.searchResult.isEmpty
-                        ? const Text('Search Something!')
-                        : GridView.builder(
-                            padding: const EdgeInsets.all(10),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 2 / 3,
-                                    mainAxisSpacing: 8,
-                                    crossAxisSpacing: 8,
-                                    crossAxisCount: 2),
-                            itemBuilder: (ctx, index) {
-                              return SeriesView(
-                                image: userSearchController
-                                    .searchResult[index].image,
-                                title: userSearchController
-                                    .searchResult[index].title,
-                                endDate: userSearchController
-                                    .searchResult[index].endDate,
-                                episodeLength: userSearchController
-                                    .searchResult[index].episodeLength,
-                                episodes: userSearchController
-                                    .searchResult[index].episodes,
-                                rating: userSearchController
-                                    .searchResult[index].rating,
-                                startDate: userSearchController
-                                    .searchResult[index].startDate,
-                                status: userSearchController
-                                    .searchResult[index].status,
-                                synopsis: userSearchController
-                                    .searchResult[index].synopsis,
-                                titleJapanese: userSearchController
-                                    .searchResult[index].titleJapanese,
-                                trailerUrl: userSearchController
-                                    .searchResult[index].trailerUrl,
-                              );
-                            },
-                            itemCount: userSearchController.searchResult.length,
-                          );
+                    : _error.isNotEmpty
+                        ? Text(_error)
+                        : userSearchController.searchResult.isEmpty &&
+                                searchController.text.isEmpty
+                            ? EmptySearchPage('Search your favourite Anime!')
+                            : userSearchController.searchResult.isEmpty &&
+                                    searchController.text.isNotEmpty
+                                ? const Text('Sorry! Could not find any result')
+                                : GridView.builder(
+                                    padding: const EdgeInsets.all(10),
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                            childAspectRatio: 2 / 3,
+                                            mainAxisSpacing: 8,
+                                            crossAxisSpacing: 8,
+                                            crossAxisCount: 2),
+                                    itemBuilder: (ctx, index) {
+                                      return SeriesView(
+                                        image: userSearchController
+                                            .searchResult[index].image,
+                                        title: userSearchController
+                                            .searchResult[index].title,
+                                        endDate: userSearchController
+                                            .searchResult[index].endDate,
+                                        episodeLength: userSearchController
+                                            .searchResult[index].episodeLength,
+                                        episodes: userSearchController
+                                            .searchResult[index].episodes,
+                                        rating: userSearchController
+                                            .searchResult[index].rating,
+                                        startDate: userSearchController
+                                            .searchResult[index].startDate,
+                                        status: userSearchController
+                                            .searchResult[index].status,
+                                        synopsis: userSearchController
+                                            .searchResult[index].synopsis,
+                                        titleJapanese: userSearchController
+                                            .searchResult[index].titleJapanese,
+                                        trailerUrl: userSearchController
+                                            .searchResult[index].trailerUrl,
+                                      );
+                                    },
+                                    itemCount: userSearchController
+                                        .searchResult.length,
+                                  );
               }),
             ),
           ],
