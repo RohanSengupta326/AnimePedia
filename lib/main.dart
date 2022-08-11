@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'homepage.dart';
-import 'global.dart';
-// for snackbar without context
+
 
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // status bar color
+    ),
+  );
   runApp(MyApp());
 }
 
@@ -20,8 +25,6 @@ class _MyAppState extends State<MyApp> {
     // print(Get.width);
     final ThemeData theme = ThemeData();
     return GetMaterialApp(
-      scaffoldMessengerKey: snackbarKey,
-      // for snackbar without context
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData(
         brightness: Brightness.dark,
