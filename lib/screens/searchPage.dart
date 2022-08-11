@@ -113,15 +113,17 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       )
                     : _error.isNotEmpty
-                    // if no error
+                        // if no error
                         ? Text(_error)
                         : userSearchController.searchResult.isEmpty &&
                                 searchController.text.isEmpty
-                                // no input has been typed by user
-                            ? EmptySearchPage('Search your favourite Anime!')
+                            // no input has been typed by user
+                            ? SingleChildScrollView(
+                                child: EmptySearchPage(
+                                    'Search your favourite Anime!'))
                             : userSearchController.searchResult.isEmpty &&
                                     searchController.text.isNotEmpty
-                                    // couldnt find typed content by user
+                                // couldnt find typed content by user
                                 ? const Text('Sorry! Could not find any result')
                                 : GridView.builder(
                                     padding: const EdgeInsets.all(10),
