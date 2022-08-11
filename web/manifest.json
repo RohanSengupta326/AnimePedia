@@ -1,6 +1,6 @@
 {
-    "name": "series",
-    "short_name": "series",
+    "name": "AnimePedia",
+    "short_name": "AnimePedia",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
