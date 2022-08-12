@@ -71,6 +71,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Text(
                     'wait a moment..',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white38,
                       fontWeight: FontWeight.w300,
@@ -90,6 +91,7 @@ class _HomePageState extends State<HomePage> {
                   return fetch();
                 },
                 child: RefreshIndicator(
+                  color: Colors.amber,
                   onRefresh: () async {
                     controller.pageRefresh();
                     i = 1;
@@ -150,7 +152,7 @@ class _HomePageState extends State<HomePage> {
         title: TextButton(
           onPressed: () {
             scrollController.animateTo(0,
-                duration: const Duration(milliseconds: 500),
+                duration: const Duration(seconds: 1),
                 curve: Curves.fastOutSlowIn);
           },
           child: const Text(
@@ -168,12 +170,12 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: Obx(() {
         // when scrolled down a bit only then button shows
         return AnimatedOpacity(
-          opacity: showButton.value ? 1 : 0,
+          opacity: showButton.value && _error.isEmpty ? 1 : 0,
           duration: const Duration(seconds: 1),
           child: FloatingActionButton(
             onPressed: () {
               scrollController.animateTo(0,
-                  duration: const Duration(milliseconds: 500),
+                  duration: const Duration(seconds: 1),
                   curve: Curves.fastOutSlowIn);
             },
             backgroundColor: Colors.amber,

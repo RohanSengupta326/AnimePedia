@@ -93,7 +93,7 @@ class SeriesData extends GetxController {
       isLoading.value = false;
 
       isLoading2.value = false;
-      throw 'Could not connect to the internet';
+      throw 'Could not connect to the internet!';
     } catch (_) {
       // print('caught error : $error');
       isLoading.value = false;

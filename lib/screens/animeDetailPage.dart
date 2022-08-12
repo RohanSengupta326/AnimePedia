@@ -203,27 +203,27 @@ class AnimeDetailPage extends StatelessWidget {
                           Align(
                             alignment: Alignment.topLeft,
                             child: SizedBox(
-                                height: 15,
                                 child: Row(
-                                  children: [
-                                    const Text(
-                                      'Trailer : ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.green),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () => _launchUrl(),
-                                      child: Text(
-                                        trailerUrl == null ? '' : 'here',
-                                        style: const TextStyle(
-                                            color: Colors.blue,
-                                            decoration:
-                                                TextDecoration.underline),
-                                      ),
-                                    )
-                                  ],
-                                )),
+                              children: [
+                                const Text(
+                                  'Trailer : ',
+                                  style: TextStyle(
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green),
+                                ),
+                                GestureDetector(
+                                  onTap: () => _launchUrl(),
+                                  child: Text(
+                                    trailerUrl == null ? '' : 'here',
+                                    style: const TextStyle(
+                                        fontSize: 9,
+                                        color: Colors.blue,
+                                        decoration: TextDecoration.underline),
+                                  ),
+                                )
+                              ],
+                            )),
                           ),
                         ],
                       ),
