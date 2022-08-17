@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "751434618295",
+    "project_id": "animepedia-e4fa7",
+    "storage_bucket": "animepedia-e4fa7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751434618295:android:4cad28b7b0205d28a4c432",
+        "android_client_info": {
+          "package_name": "com.example.animepedia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "751434618295-vejk8uqqcb1do024pbu1uir6t110t1s7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDk-cvvEnKEl0m_721wSWwW8e71Fi3LERk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751434618295-vejk8uqqcb1do024pbu1uir6t110t1s7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

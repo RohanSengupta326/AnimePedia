@@ -1,6 +1,12 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+
 import '../models/series.dart';
 import './apiKey.dart';
 
@@ -10,9 +16,12 @@ import 'package:get/get.dart';
 class SeriesData extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isLoading2 = false.obs;
+  RxBool isLoadingAuth = false.obs;
   RxBool isSearchLoading = false.obs;
   int allAnimeCount = 10;
   int searchResultCount = 10;
+  final _auth = FirebaseAuth.instance;
+
   List<Series> _items = [];
   List<Series> get items {
     return [..._items];
@@ -166,5 +175,56 @@ class SeriesData extends GetxController {
 
   void pageRefresh() {
     _items.clear();
+  }
+
+  void authUser(String email, String username, String password, bool isLogin,
+      XFile? image) async {
+    UserCredential userCredential;
+
+    try {
+      isLoadingAuth.value = true;
+
+      if (isLogin) {
+        userCredential = await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+      } else {
+        userCredential = await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+      }
+
+      if (userCredential.user == null) {
+        throw 'something went wrong ! Please try again later';
+      }
+
+      final refPath = FirebaseStorage.instance
+          .ref()
+          .child('user-image')
+          .child(userCredential.user!.uid + '.jpg');
+
+      await refPath.putFile(
+        File(image == null ? 'assets/images/userdp.png' : image.path),
+      );
+
+      final dpUrl = await refPath.getDownloadURL();
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set(
+        {
+          'username': username,
+          'email': email,
+          'dpUrl': dpUrl,
+        },
+      );
+
+      isLoadingAuth.value = false;
+    } on PlatformException catch (error) {
+      isLoadingAuth.value = false;
+      throw 'Something Went Wrong';
+    } catch (error) {
+      isLoadingAuth.value = false;
+      throw 'Something  Went Wrong';
+    }
   }
 }

@@ -13,7 +13,6 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final SeriesData userSearchController = Get.find();
   TextEditingController searchController = TextEditingController();
-  final SeriesData controller = Get.find();
   String _error = '';
   Timer? debouncer;
   // to set timer for server each request
