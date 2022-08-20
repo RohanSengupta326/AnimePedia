@@ -28,8 +28,43 @@ class _AuthScreenState extends State<AuthScreen> {
     if (isValid) {
       _formKey.currentState!.save();
 
-      controller.authUser(_userEmail.trim(), _userName.trim(),
-          _userPassword.trim(), _isLogin.value, _pickedImage);
+      print('function call');
+      controller
+          .authUser(_userEmail.trim(), _userName.trim(), _userPassword.trim(),
+              _isLogin.value, _pickedImage)
+          .catchError((error) {
+        print(error);
+        AlertDialog(
+          content: Column(
+            children: [
+              Text(
+                error.toString(),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: ButtonStyle(
+                  shadowColor: MaterialStatePropertyAll(Colors.amber),
+                  elevation: MaterialStatePropertyAll(8),
+                  shape: MaterialStatePropertyAll(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(26),
+                    ),
+                  ),
+                  backgroundColor: MaterialStatePropertyAll(Colors.amber),
+                ),
+                child: Text('Ok!'),
+              ),
+            ],
+          ),
+        );
+      });
     }
   }
 
@@ -49,48 +84,40 @@ class _AuthScreenState extends State<AuthScreen> {
               children: [
                 // design
                 SizedBox(
-                  height: 100,
+                  height: 50,
                 ),
 
-                Row(
-                  children: [
-                    Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Container(
-                            margin: EdgeInsets.only(left: 16),
-                            child: Text(
-                              'Welcome to ',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Container(
-                            margin: EdgeInsets.only(left: 16),
-                            child: Text(
-                              'AnimePedia',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ],
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 16),
+                    child: Text(
+                      'Welcome to ',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w500),
                     ),
-                  ],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 16),
+                    child: Text(
+                      'AnimePedia',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
 
-                SizedBox(height: 70),
+                SizedBox(height: 50),
 
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 16),
@@ -103,8 +130,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         if (!_isLogin.value) UploadImage(imagePicker),
                         SizedBox(height: 16),
                         Container(
-                          height: 45,
                           child: TextFormField(
+                            style: TextStyle(color: Colors.black),
                             cursorColor: Colors.amber,
                             validator: (value) {
                               if (value!.isEmpty || !value.contains('@')) {
@@ -123,6 +150,12 @@ class _AuthScreenState extends State<AuthScreen> {
                                 borderRadius: BorderRadius.circular(10.0),
                                 borderSide: BorderSide(
                                   color: Colors.amber,
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: Colors.red,
                                 ),
                               ),
                               focusColor: Colors.amber,
@@ -147,13 +180,14 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                         if (!_isLogin.value)
                           Container(
-                            height: 45,
                             child: TextFormField(
+                              style: TextStyle(color: Colors.black),
                               cursorColor: Colors.amber,
                               validator: (value) {
                                 if (value!.isEmpty || value.length < 4) {
                                   return 'please enter username of atleast 4 characters';
                                 }
+
                                 return null;
                               },
                               key: ValueKey('username'),
@@ -189,12 +223,12 @@ class _AuthScreenState extends State<AuthScreen> {
                           height: 16,
                         ),
                         Container(
-                          height: 45,
                           child: TextFormField(
+                            style: TextStyle(color: Colors.black),
                             cursorColor: Colors.amber,
                             validator: (value) {
                               if (value!.isEmpty || value.length < 7) {
-                                return 'please enter a password of atleast 7 characters long';
+                                return 'password should be atleast 7 characters long';
                               }
                               return null;
                             },
@@ -222,8 +256,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 color: Colors.grey,
                               ),
                             ),
-                            obscureText: true,
-                            // hidden(*****)
+                            obscureText: false,
                             onSaved: (value) {
                               _userPassword = value as String;
                             },
@@ -233,7 +266,9 @@ class _AuthScreenState extends State<AuthScreen> {
                           height: 50,
                         ),
                         if (controller.isLoadingAuth == true)
-                          CircularProgressIndicator(),
+                          CircularProgressIndicator(
+                            color: Colors.amber,
+                          ),
                         if (controller.isLoadingAuth == false)
                           SizedBox(
                             height: 50,
@@ -256,7 +291,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                           ),
                         SizedBox(
-                          height: 50,
+                          height: 30,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

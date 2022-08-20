@@ -177,12 +177,13 @@ class SeriesData extends GetxController {
     _items.clear();
   }
 
-  void authUser(String email, String username, String password, bool isLogin,
-      XFile? image) async {
+  Future<void> authUser(String email, String username, String password,
+      bool isLogin, XFile? image) async {
     UserCredential userCredential;
 
     try {
       isLoadingAuth.value = true;
+      print('starting');
 
       if (isLogin) {
         userCredential = await _auth.signInWithEmailAndPassword(
@@ -221,7 +222,13 @@ class SeriesData extends GetxController {
       isLoadingAuth.value = false;
     } on PlatformException catch (error) {
       isLoadingAuth.value = false;
-      throw 'Something Went Wrong';
+      // throw 'Something Went Wrong';
+      if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE' && !isLogin) {
+        throw 'Email already exists';
+      }
+      if (error.code == "ERROR_INVALID_EMAIL") {
+        throw 'Email is not valid/doesn\'nt exist';
+      }
     } catch (error) {
       isLoadingAuth.value = false;
       throw 'Something  Went Wrong';
