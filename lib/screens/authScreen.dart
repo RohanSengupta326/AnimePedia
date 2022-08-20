@@ -43,33 +43,120 @@ class _AuthScreenState extends State<AuthScreen> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16, top: 150),
+          padding: const EdgeInsets.only(left: 16.0, right: 16),
           child: Obx(() {
             return Column(
               children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    padding: EdgeInsets.all(16),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        //dont take as much space as possible but as minimum as needed
-                        children: <Widget>[
-                          if (!_isLogin.value) UploadImage(imagePicker),
+                // design
+                SizedBox(
+                  height: 100,
+                ),
+
+                Row(
+                  children: [
+                    Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                            margin: EdgeInsets.only(left: 16),
+                            child: Text(
+                              'Welcome to ',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                            margin: EdgeInsets.only(left: 16),
+                            child: Text(
+                              'AnimePedia',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 70),
+
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      //dont take as much space as possible but as minimum as needed
+                      children: <Widget>[
+                        if (!_isLogin.value) UploadImage(imagePicker),
+                        SizedBox(height: 16),
+                        Container(
+                          height: 45,
+                          child: TextFormField(
+                            cursorColor: Colors.amber,
+                            validator: (value) {
+                              if (value!.isEmpty || !value.contains('@')) {
+                                return 'please enter valid email address';
+                              }
+                              return null;
+                            },
+                            key: ValueKey('email'),
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(color: Colors.amber),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: Colors.amber,
+                                ),
+                              ),
+                              focusColor: Colors.amber,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.amber,
+                                ),
+                              ),
+                              hintText: 'Email',
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            onSaved: (value) {
+                              _userEmail = value as String;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        if (!_isLogin.value)
                           Container(
                             height: 45,
                             child: TextFormField(
                               cursorColor: Colors.amber,
                               validator: (value) {
-                                if (value!.isEmpty || !value.contains('@')) {
-                                  return 'please enter valid email address';
+                                if (value!.isEmpty || value.length < 4) {
+                                  return 'please enter username of atleast 4 characters';
                                 }
                                 return null;
                               },
-                              key: ValueKey('email'),
-                              keyboardType: TextInputType.emailAddress,
+                              key: ValueKey('username'),
                               decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -88,158 +175,113 @@ class _AuthScreenState extends State<AuthScreen> {
                                     color: Colors.amber,
                                   ),
                                 ),
-                                hintText: 'Email',
+                                hintText: 'Username',
                                 hintStyle: TextStyle(
                                   color: Colors.grey,
                                 ),
                               ),
                               onSaved: (value) {
-                                _userEmail = value as String;
+                                _userName = value as String;
                               },
                             ),
                           ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          if (!_isLogin.value)
-                            Container(
-                              height: 45,
-                              child: TextFormField(
-                                cursorColor: Colors.amber,
-                                validator: (value) {
-                                  if (value!.isEmpty || value.length < 4) {
-                                    return 'please enter username of atleast 4 characters';
-                                  }
-                                  return null;
-                                },
-                                key: ValueKey('username'),
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(color: Colors.amber),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.amber,
-                                    ),
-                                  ),
-                                  focusColor: Colors.amber,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: Colors.amber,
-                                    ),
-                                  ),
-                                  hintText: 'Username',
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                onSaved: (value) {
-                                  _userName = value as String;
-                                },
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Container(
+                          height: 45,
+                          child: TextFormField(
+                            cursorColor: Colors.amber,
+                            validator: (value) {
+                              if (value!.isEmpty || value.length < 7) {
+                                return 'please enter a password of atleast 7 characters long';
+                              }
+                              return null;
+                            },
+                            key: ValueKey('password'),
+                            decoration: InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(color: Colors.amber),
                               ),
-                            ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Container(
-                            height: 45,
-                            child: TextFormField(
-                              cursorColor: Colors.amber,
-                              validator: (value) {
-                                if (value!.isEmpty || value.length < 7) {
-                                  return 'please enter a password of atleast 7 characters long';
-                                }
-                                return null;
-                              },
-                              key: ValueKey('password'),
-                              decoration: InputDecoration(
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(color: Colors.amber),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.amber,
-                                  ),
-                                ),
-                                focusColor: Colors.amber,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    color: Colors.amber,
-                                  ),
-                                ),
-                                hintText: 'Password',
-                                hintStyle: TextStyle(
-                                  color: Colors.grey,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: Colors.amber,
                                 ),
                               ),
-                              obscureText: true,
-                              // hidden(*****)
-                              onSaved: (value) {
-                                _userPassword = value as String;
-                              },
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 50,
-                          ),
-                          if (controller.isLoadingAuth == true)
-                            CircularProgressIndicator(),
-                          if (controller.isLoadingAuth == false)
-                            SizedBox(
-                              height: 50,
-                              width: 200,
-                              child: ElevatedButton(
-                                onPressed: onSubmitted,
-                                style: ButtonStyle(
-                                  shadowColor:
-                                      MaterialStatePropertyAll(Colors.amber),
-                                  elevation: MaterialStatePropertyAll(8),
-                                  shape: MaterialStatePropertyAll(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(26),
-                                    ),
-                                  ),
-                                  backgroundColor:
-                                      MaterialStatePropertyAll(Colors.amber),
+                              focusColor: Colors.amber,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.amber,
                                 ),
-                                child:
-                                    Text(_isLogin.value ? 'LogIn' : 'SignUp'),
+                              ),
+                              hintText: 'Password',
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
                               ),
                             ),
+                            obscureText: true,
+                            // hidden(*****)
+                            onSaved: (value) {
+                              _userPassword = value as String;
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        if (controller.isLoadingAuth == true)
+                          CircularProgressIndicator(),
+                        if (controller.isLoadingAuth == false)
                           SizedBox(
                             height: 50,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                _isLogin.value
-                                    ? 'Dont\'t have an account ? '
-                                    : 'Already have an account ?',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              TextButton(
-                                style: ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStatePropertyAll(Colors.amber),
+                            width: 200,
+                            child: ElevatedButton(
+                              onPressed: onSubmitted,
+                              style: ButtonStyle(
+                                shadowColor:
+                                    MaterialStatePropertyAll(Colors.amber),
+                                elevation: MaterialStatePropertyAll(8),
+                                shape: MaterialStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(26),
+                                  ),
                                 ),
-                                onPressed: () {
-                                  _isLogin.value = !_isLogin.value;
-                                },
-                                child: Text(
-                                  _isLogin.value ? 'Register' : 'LogIn',
-                                ),
+                                backgroundColor:
+                                    MaterialStatePropertyAll(Colors.amber),
                               ),
-                            ],
+                              child: Text(_isLogin.value ? 'LogIn' : 'SignUp'),
+                            ),
                           ),
-                        ],
-                      ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              _isLogin.value
+                                  ? 'Dont\'t have an account ? '
+                                  : 'Already have an account ?',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            TextButton(
+                              style: ButtonStyle(
+                                foregroundColor:
+                                    MaterialStatePropertyAll(Colors.amber),
+                              ),
+                              onPressed: () {
+                                _isLogin.value = !_isLogin.value;
+                              },
+                              child: Text(
+                                _isLogin.value ? 'Register' : 'LogIn',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),

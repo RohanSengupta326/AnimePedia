@@ -33,7 +33,7 @@ class _UploadImageState extends State<UploadImage> {
     return Column(
       children: [
         CircleAvatar(
-          radius: 50,
+          radius: 30,
           backgroundImage: _pickedImage != null
               ? FileImage(
                   // image provider type : File
@@ -45,8 +45,9 @@ class _UploadImageState extends State<UploadImage> {
         ),
         TextButton.icon(
           onPressed: uplaodImage,
-          icon: const Icon(Icons.image),
-          label: const Text('Upload profile picture'),
+          icon: const Icon(Icons.image, color: Colors.amber),
+          label: const Text('Upload profile picture',
+              style: TextStyle(color: Colors.amber)),
         ),
       ],
     );
