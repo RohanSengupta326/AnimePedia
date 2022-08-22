@@ -234,4 +234,8 @@ class SeriesData extends GetxController {
       throw 'Something  Went Wrong';
     }
   }
+
+  Future<void> logOut() async {
+    _auth.signOut();
+  }
 }

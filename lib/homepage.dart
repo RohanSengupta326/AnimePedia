@@ -9,6 +9,8 @@ import 'errorPage.dart';
 
 import 'package:flutter/services.dart';
 
+import 'widgets/appDrawer.dart';
+
 class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
@@ -139,7 +141,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: AppDrawer(),
       appBar: AppBar(
+        titleSpacing: 0,
         actions: [
           IconButton(
             onPressed: () {
