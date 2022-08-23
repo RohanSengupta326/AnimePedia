@@ -39,7 +39,7 @@ class _UploadImageState extends State<UploadImage> {
                   // image provider type : File
                   File(_pickedImage!.path),
                 )
-              : const AssetImage('assets/images/userdp.png')
+              : const AssetImage('assets/images/userdp.jpg')
                   // image provider type : Asset
                   as ImageProvider<Object>?,
         ),

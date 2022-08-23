@@ -34,7 +34,10 @@ class AppDrawer extends StatelessWidget {
                       alignment: Alignment.topLeft,
                       child: Text(
                         'UserName',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

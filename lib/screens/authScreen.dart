@@ -22,49 +22,99 @@ class _AuthScreenState extends State<AuthScreen> {
   XFile? _pickedImage;
 
   void onSubmitted() {
-    final isValid = _formKey.currentState!.validate();
-    FocusScope.of(context).unfocus();
-
-    if (isValid) {
-      _formKey.currentState!.save();
-
-      print('function call');
-      controller
-          .authUser(_userEmail.trim(), _userName.trim(), _userPassword.trim(),
-              _isLogin.value, _pickedImage)
-          .catchError((error) {
-        print(error);
-        AlertDialog(
-          content: Column(
-            children: [
-              Text(
-                error.toString(),
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
-                style: ButtonStyle(
-                  shadowColor: MaterialStatePropertyAll(Colors.amber),
-                  elevation: MaterialStatePropertyAll(8),
-                  shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(26),
-                    ),
+    if (_pickedImage == null) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Please upload a profile picture!',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
                   ),
-                  backgroundColor: MaterialStatePropertyAll(Colors.amber),
-                ),
-                child: Text('Ok!'),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: ButtonStyle(
+                      shadowColor: MaterialStatePropertyAll(Colors.amber),
+                      elevation: MaterialStatePropertyAll(8),
+                      shape: MaterialStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(26),
+                        ),
+                      ),
+                      backgroundColor: MaterialStatePropertyAll(Colors.amber),
+                    ),
+                    child: Text('Ok!'),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          });
+    } else {
+      XFile userDp = _pickedImage as XFile;
+
+      final isValid = _formKey.currentState!.validate();
+      FocusScope.of(context).unfocus();
+
+      if (isValid) {
+        _formKey.currentState!.save();
+
+        print('function call');
+        controller
+            .authUser(_userEmail.trim(), _userName.trim(), _userPassword.trim(),
+                _isLogin.value, userDp)
+            .catchError(
+          (error) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  backgroundColor: Colors.white,
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        error.toString(),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: ButtonStyle(
+                          shadowColor: MaterialStatePropertyAll(Colors.amber),
+                          elevation: MaterialStatePropertyAll(8),
+                          shape: MaterialStatePropertyAll(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(26),
+                            ),
+                          ),
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.amber),
+                        ),
+                        child: Text('Ok!'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
         );
-      });
+      }
     }
   }
 

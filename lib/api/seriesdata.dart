@@ -178,7 +178,7 @@ class SeriesData extends GetxController {
   }
 
   Future<void> authUser(String email, String username, String password,
-      bool isLogin, XFile? image) async {
+      bool isLogin, XFile image) async {
     UserCredential userCredential;
 
     try {
@@ -203,7 +203,7 @@ class SeriesData extends GetxController {
           .child(userCredential.user!.uid + '.jpg');
 
       await refPath.putFile(
-        File(image == null ? 'assets/images/userdp.png' : image.path),
+        File(image.path),
       );
 
       final dpUrl = await refPath.getDownloadURL();
@@ -220,18 +220,18 @@ class SeriesData extends GetxController {
       );
 
       isLoadingAuth.value = false;
-    } on PlatformException catch (error) {
+    } on FirebaseAuthException catch (error) {
       isLoadingAuth.value = false;
-      // throw 'Something Went Wrong';
-      if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE' && !isLogin) {
-        throw 'Email already exists';
+      if (error.code == 'email-already-in-use') {
+        throw 'Email already exists.\nLogIn Instead.';
       }
-      if (error.code == "ERROR_INVALID_EMAIL") {
-        throw 'Email is not valid/doesn\'nt exist';
+      if (error.code == 'invalid-email' ||
+          error.code == 'invalid-email-verified') {
+        throw 'Email is not valid!';
       }
     } catch (error) {
       isLoadingAuth.value = false;
-      throw 'Something  Went Wrong';
+      throw 'Something  Went Wrong!\nPlease check your email/password!';
     }
   }
 
