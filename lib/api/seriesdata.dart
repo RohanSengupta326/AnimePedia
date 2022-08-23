@@ -229,6 +229,13 @@ class SeriesData extends GetxController {
           error.code == 'invalid-email-verified') {
         throw 'Email is not valid!';
       }
+      if (error.code == 'user-not-found') {
+        throw 'User not found!';
+      }
+      if (error.code == 'wrong-password') {
+        throw 'Password is incorrect!';
+      }
+      throw 'Something  Went Wrong!\nPlease check your email/password!';
     } catch (error) {
       isLoadingAuth.value = false;
       throw 'Something  Went Wrong!\nPlease check your email/password!';
