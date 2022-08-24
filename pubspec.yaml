@@ -47,7 +47,7 @@ dependencies:
   firebase_storage: ^10.3.5
   cloud_firestore: ^3.4.4
   image_picker: ^0.8.5+3
-  pinput: ^2.2.12
+  flutter_otp_text_field: ^1.0.0
 
 dev_dependencies:
   flutter_test:

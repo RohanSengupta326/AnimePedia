@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pinput/pinput.dart';
-// import 'package:pinput/pinput.dart';
+
 import 'package:series/api/seriesdata.dart';
+import 'package:series/widgets/otpCheckBottomSheet.dart';
 
 import '../widgets/uploadImage.dart';
 
@@ -26,118 +26,60 @@ class _AuthScreenState extends State<AuthScreen> {
   XFile? _pickedImage;
 
   void onSubmitted(BuildContext context) {
-    final defaultPinTheme = PinTheme(
-      width: 56,
-      height: 56,
-      textStyle: TextStyle(
-          fontSize: 20, color: Colors.black, fontWeight: FontWeight.w600),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.amber),
-        borderRadius: BorderRadius.circular(20),
-      ),
-    );
+    final isValid = _formKey.currentState!.validate();
+    FocusScope.of(context).unfocus();
 
-    final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: Colors.amber),
-      borderRadius: BorderRadius.circular(8),
-    );
-    final submittedPinTheme = defaultPinTheme.copyWith(
-      decoration: defaultPinTheme.decoration!.copyWith(
-        color: Colors.amber,
-      ),
-    );
-
-    if (_pickedImage == null) {
-      showDialog(
+    if (isValid) {
+      _formKey.currentState!.save();
+      if (_isPhone.value) {
+        showModalBottomSheet(
+          backgroundColor: Colors.white,
           context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Colors.white,
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Please upload a profile picture!',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    style: ButtonStyle(
-                      shadowColor: MaterialStatePropertyAll(Colors.amber),
-                      elevation: MaterialStatePropertyAll(8),
-                      shape: MaterialStatePropertyAll(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(26),
+          builder: ((context) {
+            return OtpCheck(_phone);
+          }),
+        );
+      } else {
+        if (_pickedImage == null) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: Colors.white,
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Please upload a profile picture!',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: ButtonStyle(
+                        shadowColor: MaterialStatePropertyAll(Colors.amber),
+                        elevation: MaterialStatePropertyAll(8),
+                        shape: MaterialStatePropertyAll(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(26),
+                          ),
                         ),
+                        backgroundColor: MaterialStatePropertyAll(Colors.amber),
                       ),
-                      backgroundColor: MaterialStatePropertyAll(Colors.amber),
+                      child: Text('Ok!'),
                     ),
-                    child: Text('Ok!'),
-                  ),
-                ],
-              ),
-            );
-          });
-    } else {
-      XFile userDp = _pickedImage as XFile;
-
-      final isValid = _formKey.currentState!.validate();
-      FocusScope.of(context).unfocus();
-
-      if (isValid) {
-        _formKey.currentState!.save();
-        if (_isPhone.value) {
-          showModalBottomSheet(
-              context: context,
-              builder: ((context) {
-                return SingleChildScrollView(
-                  child: Card(
-                    elevation: 5,
-                    child: Container(
-                      padding: EdgeInsets.only(
-                          top: 10,
-                          left: 10,
-                          right: 10,
-                          bottom:
-                              MediaQuery.of(context).viewInsets.bottom + 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Verification',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Enter the code sent to the numberr : $_phone',
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
-                          ),
-                          Pinput(
-                            defaultPinTheme: defaultPinTheme,
-                            focusedPinTheme: focusedPinTheme,
-                            pinputAutovalidateMode:
-                                PinputAutovalidateMode.onSubmit,
-                            showCursor: true,
-                            onSubmitted: ((value) {}),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }));
+                  ],
+                ),
+              );
+            },
+          );
         } else {
+          XFile userDp = _pickedImage as XFile;
           controller
               .authUser(_userEmail.trim(), _userName.trim(),
                   _userPassword.trim(), _isLogin.value, userDp)
@@ -247,7 +189,8 @@ class _AuthScreenState extends State<AuthScreen> {
                       mainAxisSize: MainAxisSize.min,
                       //dont take as much space as possible but as minimum as needed
                       children: <Widget>[
-                        if (!_isLogin.value) UploadImage(imagePicker),
+                        if (!_isLogin.value && !_isPhone.value)
+                          UploadImage(imagePicker),
                         SizedBox(height: 16),
                         if (!_isPhone.value)
                           Container(
