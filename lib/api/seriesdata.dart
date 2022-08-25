@@ -267,6 +267,7 @@ class SeriesData extends GetxController {
       );
       isLoadingUserData.value = false;
     } catch (err) {
+      isLoadingUserData.value = false;
       throw 'Could not fetch user data';
     }
   }
