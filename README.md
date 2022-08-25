@@ -12,7 +12,6 @@ This project is currently ongoing, many more features are to be added, if you ar
 **Flutter** is light weight, easy to implement and fast, thats why Flutter has been my choice to develop this application. 
 
 ### Features to be added : 
-- User SignUp and LogIn 
 - User favourite section to store your favourite anime to watch later
 - share and suggest anime to your friends
 
