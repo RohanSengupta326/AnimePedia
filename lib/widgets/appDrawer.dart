@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:series/api/seriesdata.dart';
+import 'package:series/screens/profileEditScreen.dart';
 
 class AppDrawer extends StatefulWidget {
   @override
@@ -101,6 +102,36 @@ class _AppDrawerState extends State<AppDrawer> {
                 padding: const EdgeInsets.only(left: 16.0),
                 child: Column(
                   children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: TextButton.icon(
+                        onPressed: () {
+                          Get.to(ProfileEditScreen());
+                        },
+                        icon: Icon(
+                          Icons.account_circle,
+                          color: Colors.amber,
+                        ),
+                        label: Text(
+                          'Profile',
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: TextButton.icon(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        label: Text(
+                          'Favourites',
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                      ),
+                    ),
                     Align(
                       alignment: Alignment.topLeft,
                       child: TextButton.icon(

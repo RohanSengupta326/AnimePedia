@@ -21,6 +21,7 @@ class SeriesData extends GetxController {
   RxBool isLoadingAuth = false.obs;
   RxBool isLoadingUserData = false.obs;
   RxBool isSearchLoading = false.obs;
+  RxBool isSaveUserDataLoading = false.obs;
   int allAnimeCount = 10;
   int searchResultCount = 10;
   final _auth = FirebaseAuth.instance;
@@ -269,6 +270,37 @@ class SeriesData extends GetxController {
     } catch (err) {
       isLoadingUserData.value = false;
       throw 'Could not fetch user data';
+    }
+  }
+
+  Future<void> saveNewUserData(String username, XFile? image) async {
+    try {
+      isSaveUserDataLoading.value = true;
+      final userId = FirebaseAuth.instance.currentUser!.uid;
+      final refPath = FirebaseStorage.instance
+          .ref()
+          .child('user-image')
+          .child(userId + '.jpg');
+
+      await refPath.putFile(
+        File(image!.path),
+      );
+
+      final dpUrl = await refPath.getDownloadURL();
+
+      await FirebaseFirestore.instance.collection('users').doc(userId).set(
+        {
+          'username': username,
+          'dpUrl': dpUrl,
+        },
+      );
+      isSaveUserDataLoading.value = false;
+    } on FirebaseAuthException {
+      isSaveUserDataLoading.value = false;
+      throw 'Could not save data at the moment, Please try again later';
+    } catch (err) {
+      isSaveUserDataLoading.value = false;
+      throw 'Could not save data at the moment, Please try again later';
     }
   }
 
