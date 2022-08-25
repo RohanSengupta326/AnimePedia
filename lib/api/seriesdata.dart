@@ -244,12 +244,12 @@ class SeriesData extends GetxController {
       throw 'Something  Went Wrong!\nPlease check your email/password!';
     } catch (error) {
       isLoadingAuth.value = false;
-      throw error;
+      throw 'Something went wrong';
     }
   }
 
   Future<void> fetchUserData() async {
-    currentUserData = [];
+    currentUserData = [UserData('', '')];
     final userId = FirebaseAuth.instance.currentUser!.uid;
 
     try {
@@ -259,12 +259,12 @@ class SeriesData extends GetxController {
           .doc(userId)
           .get();
 
-      currentUserData.add(
+      currentUserData = [
         UserData(
           userData['username'],
           userData['dpUrl'],
         ),
-      );
+      ];
       isLoadingUserData.value = false;
     } catch (err) {
       isLoadingUserData.value = false;
@@ -274,5 +274,8 @@ class SeriesData extends GetxController {
 
   Future<void> logOut() async {
     _auth.signOut();
+    currentUserData = [
+      UserData('', ''),
+    ];
   }
 }

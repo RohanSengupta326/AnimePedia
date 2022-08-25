@@ -12,8 +12,14 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer> {
   final SeriesData controller = Get.find();
+  static int firstFetch = 0;
 
   getUserData() {
+    if (firstFetch > 0) {
+      // dont fetch if already fetched once, user data
+      return;
+    }
+    firstFetch++;
     controller.fetchUserData().catchError((onError) {
       print(onError);
     });
