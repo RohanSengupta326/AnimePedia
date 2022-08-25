@@ -1,9 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:series/api/seriesdata.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
+  @override
+  State<AppDrawer> createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
   final SeriesData controller = Get.find();
+
+  getUserData() {
+    controller.fetchUserData().catchError((onError) {
+      print(onError);
+    });
+  }
+
+  @override
+  void initState() {
+    getUserData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,25 +41,47 @@ class AppDrawer extends StatelessWidget {
                 child: Column(
                   children: [
                     Align(
-                      alignment: Alignment.topLeft,
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundImage: AssetImage('assets/images/userdp.jpg'),
-                      ),
-                    ),
+                        alignment: Alignment.topLeft,
+                        child: Obx(() {
+                          return controller.isLoadingUserData.value
+                              ? CupertinoActivityIndicator(
+                                  color: Colors.white,
+                                )
+                              : CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: controller
+                                              .currentUserData.isNotEmpty &&
+                                          controller.currentUserData[0].dpUrl !=
+                                              ''
+                                      ? NetworkImage(
+                                          controller.currentUserData[0].dpUrl)
+                                      : AssetImage('assets/images/userdp.jpg')
+                                          as ImageProvider<Object>,
+                                );
+                        })),
                     SizedBox(
                       height: 12,
                     ),
                     Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'UserName',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                        alignment: Alignment.topLeft,
+                        child: Obx(() {
+                          return controller.isLoadingUserData.value
+                              ? CupertinoActivityIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text(
+                                  controller.currentUserData.isNotEmpty &&
+                                          controller.currentUserData[0]
+                                                  .username !=
+                                              ''
+                                      ? controller.currentUserData[0].username
+                                      : 'Unknown',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                );
+                        })),
                   ],
                 ),
               ),

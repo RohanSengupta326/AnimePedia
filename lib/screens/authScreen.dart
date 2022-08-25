@@ -40,7 +40,7 @@ class _AuthScreenState extends State<AuthScreen> {
           }),
         );
       } else {
-        if (_pickedImage == null) {
+        if (_pickedImage == null && !_isLogin.value) {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -79,7 +79,10 @@ class _AuthScreenState extends State<AuthScreen> {
             },
           );
         } else {
-          XFile userDp = _pickedImage as XFile;
+          XFile? userDp;
+          if (!_isLogin.value) {
+            userDp = _pickedImage as XFile;
+          }
           controller
               .authUser(_userEmail.trim(), _userName.trim(),
                   _userPassword.trim(), _isLogin.value, userDp)
