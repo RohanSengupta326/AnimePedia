@@ -45,6 +45,7 @@ class AnimeDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        titleSpacing: 0,
         backgroundColor: Colors.amber,
         title: Text(
           title,
@@ -208,7 +209,6 @@ class AnimeDetailPage extends StatelessWidget {
                                 const Text(
                                   'Trailer : ',
                                   style: TextStyle(
-                                      fontSize: 9,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.green),
                                 ),
@@ -217,7 +217,6 @@ class AnimeDetailPage extends StatelessWidget {
                                   child: Text(
                                     trailerUrl == null ? '' : 'here',
                                     style: const TextStyle(
-                                        fontSize: 9,
                                         color: Colors.blue,
                                         decoration: TextDecoration.underline),
                                   ),
@@ -232,8 +231,25 @@ class AnimeDetailPage extends StatelessWidget {
                 ],
               ),
               const Divider(),
-              const SizedBox(
-                height: 15,
+              Align(
+                alignment: Alignment.topLeft,
+                child: SizedBox(
+                  child: Row(
+                    children: [
+                      TextButton.icon(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        label: Text(
+                          'Favourite',
+                          style: TextStyle(color: Colors.amber),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
               Align(
                 alignment: Alignment.topLeft,

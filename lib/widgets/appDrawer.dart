@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:series/api/seriesdata.dart';
+import 'package:series/screens/favouritesScreen.dart';
 import 'package:series/screens/profileEditScreen.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -121,7 +122,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () => Get.to(FavouritesScreen()),
                         icon: Icon(
                           Icons.star,
                           color: Colors.amber,
