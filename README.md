@@ -47,7 +47,9 @@ samples, guidance on mobile development, and a full API reference.
 - Clone this repository using `git clone https://github.com/RohanSengupta326/AnimePedia.git`.
 - `cd AnimePedia`.
 - `flutter pub get` to get all the dependencies.
-- `flutter run` to run the project on connected device / emulator. 
+- change Flutter channel with command `flutter channel master`
+- run `flutter upgrade`
+- `flutter run` to run the project on connected device / emulator or, run from your IDE.
 
 ## Screenshots : 
 
