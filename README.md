@@ -21,6 +21,11 @@ If people like it we may even be able to create an Anime streaming service which
 
 ## Set-Up and run the Project :
 
+#### Requirements : 
+ 1. Flutter
+ 2. Android Studio 
+ 3. Emulator/Real Device(Android)
+
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
@@ -32,10 +37,7 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-#### Requirements : 
- 1. Flutter
- 2. Android Studio 
- 3. Emulator/Real Device(Android)
+
 
 #### How to install : 
 
