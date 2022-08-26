@@ -33,6 +33,11 @@ class SeriesData extends GetxController {
     return [..._items];
   }
 
+  List<Series> _favouritesList = [];
+  List<Series> get favourites {
+    return [..._favouritesList];
+  }
+
   List<Series> _searchResult = [];
   List<Series> get searchResult {
     return [..._searchResult];

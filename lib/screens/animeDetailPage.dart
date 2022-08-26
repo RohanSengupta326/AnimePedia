@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:series/api/seriesdata.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../models/series.dart';
 
 class AnimeDetailPage extends StatelessWidget {
   final image;
@@ -30,6 +34,8 @@ class AnimeDetailPage extends StatelessWidget {
       this.titleJapanese,
       this.trailerUrl});
 
+  final SeriesData controller = Get.find();
+
   Future<void> _launchUrl() async {
     final Uri url = Uri.parse(trailerUrl ?? '');
     if (!await launchUrl(
@@ -43,6 +49,12 @@ class AnimeDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int favIndex = controller.favourites.indexWhere(
+      (element) {
+        return element.title == title;
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
@@ -237,9 +249,29 @@ class AnimeDetailPage extends StatelessWidget {
                   child: Row(
                     children: [
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (favIndex < 0) {
+                            controller.favourites.add(
+                              Series(
+                                endDate: endDate,
+                                episodeLength: episodeLength,
+                                episodes: episodes,
+                                image: image,
+                                rating: rating,
+                                startDate: startDate,
+                                status: status,
+                                synopsis: synopsis,
+                                title: title,
+                                titleJapanese: titleJapanese,
+                                trailerUrl: trailerUrl,
+                              ),
+                            );
+                          } else {
+                            controller.favourites.removeAt(favIndex);
+                          }
+                        },
                         icon: Icon(
-                          Icons.star,
+                          favIndex < 0 ? Icons.star_border : Icons.star,
                           color: Colors.amber,
                         ),
                         label: Text(
