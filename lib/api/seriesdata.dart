@@ -309,6 +309,73 @@ class SeriesData extends GetxController {
     }
   }
 
+  Future<void> updateFavourites(
+    final image,
+    final title,
+    final episodeLength,
+    final episodes,
+    final rating,
+    final startDate,
+    final endDate,
+    final status,
+    final synopsis,
+    final titleJapanese,
+    final trailerUrl,
+    bool isFavourite,
+  ) async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+
+    try {
+      if (isFavourite) {
+        await FirebaseFirestore.instance
+            .collection('user-favourite')
+            .doc(userId)
+            .collection('items')
+            .doc(title)
+            .set(
+          {
+            'image': image,
+            'title': title,
+            'episodeLength': episodeLength,
+            'episodes': episodes,
+            'rating': rating,
+            'startDate': startDate,
+            'endDate': endDate,
+            'status': status,
+            'synopsis': synopsis,
+            'titleJapanese': titleJapanese,
+            'trailerUrl': trailerUrl,
+          },
+        );
+        favourites.add(Series(
+            endDate: endDate,
+            episodeLength: episodeLength,
+            episodes: episodes,
+            image: image,
+            rating: rating,
+            startDate: startDate,
+            status: status,
+            synopsis: synopsis,
+            title: title,
+            titleJapanese: titleJapanese,
+            trailerUrl: trailerUrl));
+      } else {
+        await FirebaseFirestore.instance
+            .collection('user-favourite')
+            .doc(userId)
+            .collection('items')
+            .doc(title)
+            .delete();
+        favourites.removeAt(
+            favourites.indexWhere((element) => element.title == title));
+      }
+    } on FirebaseAuthException {
+      throw 'Could not edit favourites list';
+    } catch (error) {
+      throw 'Something went wrong!, please try again later';
+    }
+  }
+
   Future<void> logOut() async {
     _auth.signOut();
     currentUserData = [

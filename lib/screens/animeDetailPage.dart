@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -54,6 +56,8 @@ class AnimeDetailPage extends StatelessWidget {
         return element.title == title;
       },
     );
+
+    RxBool isFavourite = favIndex < 0 ? false.obs : true.obs;
 
     return Scaffold(
       appBar: AppBar(
@@ -243,45 +247,100 @@ class AnimeDetailPage extends StatelessWidget {
                 ],
               ),
               const Divider(),
-              Align(
-                alignment: Alignment.topLeft,
-                child: SizedBox(
-                  child: Row(
-                    children: [
-                      TextButton.icon(
-                        onPressed: () {
-                          if (favIndex < 0) {
-                            controller.favourites.add(
-                              Series(
-                                endDate: endDate,
-                                episodeLength: episodeLength,
-                                episodes: episodes,
-                                image: image,
-                                rating: rating,
-                                startDate: startDate,
-                                status: status,
-                                synopsis: synopsis,
-                                title: title,
-                                titleJapanese: titleJapanese,
-                                trailerUrl: trailerUrl,
-                              ),
-                            );
-                          } else {
-                            controller.favourites.removeAt(favIndex);
-                          }
-                        },
-                        icon: Icon(
-                          favIndex < 0 ? Icons.star_border : Icons.star,
-                          color: Colors.amber,
-                        ),
-                        label: Text(
-                          'Favourite',
-                          style: TextStyle(color: Colors.amber),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('user-favourite')
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .collection('items')
+                    .where("title", isEqualTo: title)
+                    .snapshots(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  int length = snapshot.data.docs.length;
+                  if (snapshot.data == null) {
+                    return Text('Not fav');
+                  }
+                  return Align(
+                    alignment: Alignment.topLeft,
+                    child: SizedBox(
+                      child: Row(
+                        children: [
+                          TextButton.icon(
+                            onPressed: () {
+                              controller
+                                  .updateFavourites(
+                                      image,
+                                      title,
+                                      episodeLength,
+                                      episodes,
+                                      rating,
+                                      startDate,
+                                      endDate,
+                                      status,
+                                      synopsis,
+                                      titleJapanese,
+                                      trailerUrl,
+                                      length < 0 ? false : true)
+                                  .catchError((err) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      backgroundColor: Colors.white,
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            err.toString(),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(),
+                                            style: ButtonStyle(
+                                              shadowColor:
+                                                  MaterialStatePropertyAll(
+                                                      Colors.amber),
+                                              elevation:
+                                                  MaterialStatePropertyAll(8),
+                                              shape: MaterialStatePropertyAll(
+                                                RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(26),
+                                                ),
+                                              ),
+                                              backgroundColor:
+                                                  MaterialStatePropertyAll(
+                                                      Colors.amber),
+                                            ),
+                                            child: Text('Ok!'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              });
+                            },
+                            icon: Icon(
+                              length < 0 ? Icons.star_border : Icons.star,
+                              color: Colors.amber,
+                            ),
+                            label: Text(
+                              'Favourite',
+                              style: TextStyle(color: Colors.amber),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
               Align(
                 alignment: Alignment.topLeft,
