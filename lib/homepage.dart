@@ -38,6 +38,48 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void getUserFavouriteList() {
+    controller.fetchUserFavouriteList().catchError((er) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  er.toString(),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: ButtonStyle(
+                    shadowColor: MaterialStatePropertyAll(Colors.amber),
+                    elevation: MaterialStatePropertyAll(8),
+                    shape: MaterialStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(26),
+                      ),
+                    ),
+                    backgroundColor: MaterialStatePropertyAll(Colors.amber),
+                  ),
+                  child: Text('Ok!'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    });
+  }
+
   @override
   void initState() {
     fetch();
@@ -53,6 +95,9 @@ class _HomePageState extends State<HomePage> {
         showButton.value = false;
       }
     });
+
+    getUserFavouriteList();
+
     super.initState();
   }
 
@@ -141,7 +186,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: AppDrawer(),
+      drawer: AppDrawer(getUserFavouriteList),
       appBar: AppBar(
         titleSpacing: 0,
         actions: [

@@ -4,8 +4,6 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../models/series.dart';
@@ -16,6 +14,7 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 class SeriesData extends GetxController {
+  RxBool isFavAdding = false.obs;
   RxBool isLoading = false.obs;
   RxBool isLoading2 = false.obs;
   RxBool isLoadingAuth = false.obs;
@@ -326,7 +325,8 @@ class SeriesData extends GetxController {
     final userId = FirebaseAuth.instance.currentUser!.uid;
 
     try {
-      if (isFavourite) {
+      isFavAdding.value = true;
+      if (!isFavourite) {
         await FirebaseFirestore.instance
             .collection('user-favourite')
             .doc(userId)
@@ -346,33 +346,78 @@ class SeriesData extends GetxController {
             'titleJapanese': titleJapanese,
             'trailerUrl': trailerUrl,
           },
-        );
-        favourites.add(Series(
-            endDate: endDate,
-            episodeLength: episodeLength,
-            episodes: episodes,
-            image: image,
-            rating: rating,
-            startDate: startDate,
-            status: status,
-            synopsis: synopsis,
-            title: title,
-            titleJapanese: titleJapanese,
-            trailerUrl: trailerUrl));
+        ).then((value) {
+          _favouritesList.add(
+            Series(
+                endDate: endDate,
+                episodeLength: episodeLength,
+                episodes: episodes,
+                image: image,
+                rating: rating,
+                startDate: startDate,
+                status: status,
+                synopsis: synopsis,
+                title: title,
+                titleJapanese: titleJapanese,
+                trailerUrl: trailerUrl),
+          );
+        });
+        isFavAdding.value = false;
       } else {
         await FirebaseFirestore.instance
             .collection('user-favourite')
             .doc(userId)
             .collection('items')
             .doc(title)
-            .delete();
-        favourites.removeAt(
-            favourites.indexWhere((element) => element.title == title));
+            .delete()
+            .then((value) {
+          _favouritesList.removeAt(
+            _favouritesList.indexWhere((element) => element.title == title),
+          );
+        });
+        isFavAdding.value = false;
       }
     } on FirebaseAuthException {
+      isFavAdding.value = false;
       throw 'Could not edit favourites list';
     } catch (error) {
+      isFavAdding.value = false;
       throw 'Something went wrong!, please try again later';
+    }
+  }
+
+  Future<void> fetchUserFavouriteList() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+
+    try {
+      isFavAdding.value = true;
+      final userData = await FirebaseFirestore.instance
+          .collection('user-favourite')
+          .doc(userId)
+          .collection('items')
+          .get();
+
+      _favouritesList = List.from(
+        userData.docs.map(
+          (e) => Series(
+              endDate: e.data()['endDate'],
+              episodeLength: e.data()['episodeLength'],
+              episodes: e.data()['episodes'],
+              image: e.data()['image'],
+              rating: e.data()['rating'],
+              startDate: e.data()['startDate'],
+              status: e.data()['status'],
+              synopsis: e.data()['synopsis'],
+              title: e.data()['title'],
+              titleJapanese: e.data()['titleJapanese'],
+              trailerUrl: e.data()['trailerUrl']),
+        ),
+      );
+
+      isFavAdding.value = false;
+    } catch (err) {
+      isFavAdding.value = false;
+      throw 'Could not fetch user favourites list';
     }
   }
 

@@ -8,6 +8,9 @@ import 'package:series/screens/favouritesScreen.dart';
 import 'package:series/screens/profileEditScreen.dart';
 
 class AppDrawer extends StatefulWidget {
+  final void Function() getFavouriteData;
+  AppDrawer(this.getFavouriteData);
+
   @override
   State<AppDrawer> createState() => _AppDrawerState();
 }
@@ -122,7 +125,8 @@ class _AppDrawerState extends State<AppDrawer> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: TextButton.icon(
-                        onPressed: () => Get.to(FavouritesScreen()),
+                        onPressed: () =>
+                            Get.to(FavouritesScreen(widget.getFavouriteData)),
                         icon: Icon(
                           Icons.star,
                           color: Colors.amber,

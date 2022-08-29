@@ -1,14 +1,11 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:series/api/seriesdata.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../models/series.dart';
 
 class AnimeDetailPage extends StatelessWidget {
   final image;
@@ -22,6 +19,8 @@ class AnimeDetailPage extends StatelessWidget {
   final synopsis;
   final titleJapanese;
   final trailerUrl;
+  final SeriesData controller = Get.find();
+  RxBool isData = false.obs;
 
   AnimeDetailPage(
       {this.image,
@@ -34,9 +33,7 @@ class AnimeDetailPage extends StatelessWidget {
       this.status,
       this.synopsis,
       this.titleJapanese,
-      this.trailerUrl});
-
-  final SeriesData controller = Get.find();
+      this.trailerUrl}) {}
 
   Future<void> _launchUrl() async {
     final Uri url = Uri.parse(trailerUrl ?? '');
@@ -49,15 +46,71 @@ class AnimeDetailPage extends StatelessWidget {
     }
   }
 
+  void updateFav(BuildContext context) {
+    controller
+        .updateFavourites(
+            image,
+            title,
+            episodeLength,
+            episodes,
+            rating,
+            startDate,
+            endDate,
+            status,
+            synopsis,
+            titleJapanese,
+            trailerUrl,
+            isData.value ? false : true)
+        .then((_) {
+      isData.value = (controller.favourites
+              .indexWhere((element) => element.title == title) <
+          0);
+    }).catchError((err) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  err.toString(),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: ButtonStyle(
+                    shadowColor: MaterialStatePropertyAll(Colors.amber),
+                    elevation: MaterialStatePropertyAll(8),
+                    shape: MaterialStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(26),
+                      ),
+                    ),
+                    backgroundColor: MaterialStatePropertyAll(Colors.amber),
+                  ),
+                  child: Text('Ok!'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    int favIndex = controller.favourites.indexWhere(
-      (element) {
-        return element.title == title;
-      },
-    );
-
-    RxBool isFavourite = favIndex < 0 ? false.obs : true.obs;
+    isData.value =
+        (controller.favourites.indexWhere((element) => element.title == title) <
+            0);
 
     return Scaffold(
       appBar: AppBar(
@@ -247,101 +300,40 @@ class AnimeDetailPage extends StatelessWidget {
                 ],
               ),
               const Divider(),
-              StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('user-favourite')
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .collection('items')
-                    .where("title", isEqualTo: title)
-                    .snapshots(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  int length = snapshot.data.docs.length;
-                  if (snapshot.data == null) {
-                    return Text('Not fav');
-                  }
-                  return Align(
-                    alignment: Alignment.topLeft,
-                    child: SizedBox(
-                      child: Row(
-                        children: [
-                          TextButton.icon(
-                            onPressed: () {
-                              controller
-                                  .updateFavourites(
-                                      image,
-                                      title,
-                                      episodeLength,
-                                      episodes,
-                                      rating,
-                                      startDate,
-                                      endDate,
-                                      status,
-                                      synopsis,
-                                      titleJapanese,
-                                      trailerUrl,
-                                      length < 0 ? false : true)
-                                  .catchError((err) {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      backgroundColor: Colors.white,
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
-                                            err.toString(),
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          ElevatedButton(
-                                            onPressed: () =>
-                                                Navigator.of(context).pop(),
-                                            style: ButtonStyle(
-                                              shadowColor:
-                                                  MaterialStatePropertyAll(
-                                                      Colors.amber),
-                                              elevation:
-                                                  MaterialStatePropertyAll(8),
-                                              shape: MaterialStatePropertyAll(
-                                                RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(26),
-                                                ),
-                                              ),
-                                              backgroundColor:
-                                                  MaterialStatePropertyAll(
-                                                      Colors.amber),
-                                            ),
-                                            child: Text('Ok!'),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              });
-                            },
-                            icon: Icon(
-                              length < 0 ? Icons.star_border : Icons.star,
-                              color: Colors.amber,
-                            ),
-                            label: Text(
-                              'Favourite',
-                              style: TextStyle(color: Colors.amber),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+              Obx(() {
+                return controller.isFavAdding.value
+                    ? Container(
+                        margin: EdgeInsets.all(16),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: CupertinoActivityIndicator(
+                            color: Colors.amber,
+                          ),
+                        ),
+                      )
+                    : Align(
+                        alignment: Alignment.topLeft,
+                        child: SizedBox(
+                          child: Row(
+                            children: [
+                              TextButton.icon(
+                                onPressed: () {
+                                  updateFav(context);
+                                },
+                                icon: Icon(
+                                  isData.value ? Icons.star_border : Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                label: Text(
+                                  'Favourite',
+                                  style: TextStyle(color: Colors.amber),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+              }),
               Align(
                 alignment: Alignment.topLeft,
                 child: SizedBox(
