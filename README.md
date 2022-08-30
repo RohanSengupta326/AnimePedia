@@ -8,6 +8,7 @@ This project is currently ongoing, many more features are to be added, if you ar
 
 - **Flutter & Dart**
 - **Firebase**
+- **API - https://jikan.moe/**
 
 **Flutter** is light weight, easy to implement and fast, thats why Flutter has been my choice to develop this application. 
 
