@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
+import 'dart:math';
+import 'dart:developer' as dev;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -413,7 +415,6 @@ class SeriesData extends GetxController {
               trailerUrl: e.data()['trailerUrl']),
         ),
       );
-
       isFavAdding.value = false;
     } catch (err) {
       isFavAdding.value = false;
