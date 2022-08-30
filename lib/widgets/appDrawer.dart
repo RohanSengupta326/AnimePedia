@@ -14,7 +14,7 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer> {
   final SeriesData controller = Get.find();
-  static int firstFetch = 0;
+  static int firstFetch = 1;
 
   getUserData() {
     if (firstFetch > 0) {

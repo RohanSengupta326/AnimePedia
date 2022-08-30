@@ -182,7 +182,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                 ),
 
-                SizedBox(height: 50),
+                SizedBox(height: 30),
 
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 16),
@@ -197,6 +197,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         SizedBox(height: 16),
                         if (!_isPhone.value)
                           Container(
+                            height: 50,
                             child: TextFormField(
                               style: TextStyle(color: Colors.black),
                               cursorColor: Colors.amber,
@@ -247,6 +248,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                         if (!_isLogin.value && !_isPhone.value)
                           Container(
+                            height: 50,
                             child: TextFormField(
                               style: TextStyle(color: Colors.black),
                               cursorColor: Colors.amber,
@@ -291,6 +293,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                         if (!_isPhone.value)
                           Container(
+                            height: 50,
                             child: TextFormField(
                               style: TextStyle(color: Colors.black),
                               cursorColor: Colors.amber,
@@ -332,6 +335,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                         if (_isPhone.value)
                           Container(
+                            height: 50,
                             child: TextFormField(
                               style: TextStyle(color: Colors.black),
                               cursorColor: Colors.amber,
@@ -401,7 +405,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           height: 20,
                         ),
                         Text(
-                          '--------------------------    OR   -------------------------',
+                          '--- OR ---',
                           style: TextStyle(fontSize: 14, color: Colors.grey),
                         ),
                         SizedBox(

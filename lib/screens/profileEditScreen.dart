@@ -153,9 +153,7 @@ class ProfileEditScreen extends StatelessWidget {
                   child: Text(
                     'Change/Set Profile Picture and Username',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500),
+                        color: Colors.white, fontWeight: FontWeight.w500),
                   ),
                 ),
               ),

@@ -126,8 +126,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
           },
           child: const Text(
             'Your Favourite Animes',
-            style: TextStyle(
-                fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
       ),

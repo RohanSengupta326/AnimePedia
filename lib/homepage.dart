@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   ScrollController scrollController = ScrollController();
   RxBool showButton = false.obs;
   // to show, go to top button or not
+  int firstFetch = 0;
 
   void fetch([bool? onInternetGone]) {
     // if trying again after internet gone, start from first page
@@ -38,10 +39,22 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  getUserData() {
+    if (firstFetch > 0) {
+      // dont fetch if already fetched once, user data
+      return;
+    }
+    firstFetch++;
+    controller.fetchUserData().catchError((onError) {
+      print(onError);
+    });
+  }
+
   @override
   void initState() {
     fetch();
     // first fetch on app start
+    getUserData();
 
     // when scrolled down , then show button to come up
     scrollController.addListener(() {
@@ -62,7 +75,6 @@ class _HomePageState extends State<HomePage> {
         ? Center(
             child: SizedBox(
               height: 100,
-              width: 100,
               child: Column(
                 children: const [
                   CircularProgressIndicator(

@@ -100,11 +100,13 @@ class _SearchPageState extends State<SearchPage> {
                               SizedBox(
                                 height: 2,
                               ),
-                              Text(
-                                'wait a moment..',
-                                style: TextStyle(
-                                  color: Colors.white38,
-                                  fontWeight: FontWeight.w300,
+                              SizedBox(
+                                child: Text(
+                                  'wait a moment..',
+                                  style: TextStyle(
+                                    color: Colors.white38,
+                                    fontWeight: FontWeight.w300,
+                                  ),
                                 ),
                               )
                             ],
