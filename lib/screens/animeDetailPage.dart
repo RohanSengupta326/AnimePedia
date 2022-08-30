@@ -149,151 +149,153 @@ class AnimeDetailPage extends StatelessWidget {
                   Expanded(
                     child: SizedBox(
                       height: 250,
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: SizedBox(
-                              child: RichText(
-                                text: TextSpan(
-                                  text: title ?? '',
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.amber),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: SizedBox(
-                              child: RichText(
-                                text: TextSpan(
-                                  text: 'Rating : ',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: rating == null
-                                          ? ''
-                                          : rating.toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: SizedBox(
-                              child: RichText(
-                                text: TextSpan(
-                                  text: 'Episodes : ',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: episodes == null
-                                          ? ''
-                                          : episodes.toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: SizedBox(
-                              child: RichText(
-                                text: TextSpan(
-                                  text: 'Episode Length : ',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: episodeLength == null
-                                          ? ''
-                                          : episodeLength.toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: SizedBox(
-                              child: RichText(
-                                text: TextSpan(
-                                  text: 'Status : ',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: status ?? '',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: SizedBox(
-                                child: Row(
-                              children: [
-                                const Text(
-                                  'Trailer : ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green),
-                                ),
-                                GestureDetector(
-                                  onTap: () => _launchUrl(),
-                                  child: Text(
-                                    trailerUrl == null ? '' : 'here',
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: SizedBox(
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: title ?? '',
                                     style: const TextStyle(
-                                        color: Colors.blue,
-                                        decoration: TextDecoration.underline),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.amber),
                                   ),
-                                )
-                              ],
-                            )),
-                          ),
-                        ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: SizedBox(
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: 'Rating : ',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: rating == null
+                                            ? ''
+                                            : rating.toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: SizedBox(
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: 'Episodes : ',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: episodes == null
+                                            ? ''
+                                            : episodes.toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: SizedBox(
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: 'Episode Length : ',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: episodeLength == null
+                                            ? ''
+                                            : episodeLength.toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: SizedBox(
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: 'Status : ',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: status ?? '',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: SizedBox(
+                                  child: Row(
+                                children: [
+                                  const Text(
+                                    'Trailer : ',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () => _launchUrl(),
+                                    child: Text(
+                                      trailerUrl == null ? '' : 'here',
+                                      style: const TextStyle(
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline),
+                                    ),
+                                  )
+                                ],
+                              )),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   )
