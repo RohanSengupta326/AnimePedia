@@ -73,6 +73,8 @@ class ProfileEditScreen extends StatelessWidget {
           _userName = controller.currentUserData[0].username == ''
               ? 'Unknown'
               : controller.currentUserData[0].username;
+        } else if (_userName == '' && userDp == null) {
+          return;
         }
 
         controller.saveNewUserData(_userName.trim(), userDp).catchError(
