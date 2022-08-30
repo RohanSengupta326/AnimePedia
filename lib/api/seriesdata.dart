@@ -256,7 +256,6 @@ class SeriesData extends GetxController {
   }
 
   Future<void> fetchUserData() async {
-    currentUserData = [UserData('', '')];
     final userId = FirebaseAuth.instance.currentUser!.uid;
 
     try {
@@ -283,23 +282,33 @@ class SeriesData extends GetxController {
     try {
       isSaveUserDataLoading.value = true;
       final userId = FirebaseAuth.instance.currentUser!.uid;
-      final refPath = FirebaseStorage.instance
-          .ref()
-          .child('user-image')
-          .child(userId + '.jpg');
 
-      await refPath.putFile(
-        File(image!.path),
-      );
+      if (image != null) {
+        final refPath = FirebaseStorage.instance
+            .ref()
+            .child('user-image')
+            .child(userId + '.jpg');
 
-      final dpUrl = await refPath.getDownloadURL();
+        await refPath.putFile(
+          File(image.path),
+        );
+        final dpUrl = await refPath.getDownloadURL();
 
-      await FirebaseFirestore.instance.collection('users').doc(userId).set(
-        {
-          'username': username,
-          'dpUrl': dpUrl,
-        },
-      );
+        await FirebaseFirestore.instance.collection('users').doc(userId).set(
+          {
+            'username': username,
+            'dpUrl': dpUrl,
+          },
+        );
+      } else {
+        await FirebaseFirestore.instance.collection('users').doc(userId).set(
+          {
+            'username': username,
+            'dpUrl': currentUserData[0].dpUrl,
+          },
+        );
+      }
+
       isSaveUserDataLoading.value = false;
     } on FirebaseAuthException {
       isSaveUserDataLoading.value = false;

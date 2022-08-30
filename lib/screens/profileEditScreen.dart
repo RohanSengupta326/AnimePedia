@@ -24,7 +24,9 @@ class ProfileEditScreen extends StatelessWidget {
     if (isValid) {
       _formKey.currentState!.save();
 
-      if (_pickedImage == null) {
+      if (_pickedImage == null &&
+          (controller.currentUserData.isEmpty &&
+              controller.currentUserData[0].dpUrl == '')) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -65,7 +67,13 @@ class ProfileEditScreen extends StatelessWidget {
       } else {
         XFile? userDp;
 
-        userDp = _pickedImage as XFile;
+        userDp = _pickedImage != null ? _pickedImage as XFile : null;
+
+        if (_userName == '' && userDp != null) {
+          _userName = controller.currentUserData[0].username == ''
+              ? 'Unknown'
+              : controller.currentUserData[0].username;
+        }
 
         controller.saveNewUserData(_userName.trim(), userDp).catchError(
           (error) {
@@ -166,13 +174,6 @@ class ProfileEditScreen extends StatelessWidget {
                         child: TextFormField(
                           style: TextStyle(color: Colors.white),
                           cursorColor: Colors.amber,
-                          validator: (value) {
-                            if (value!.isEmpty || value.length < 4) {
-                              return 'please enter username of atleast 4 characters';
-                            }
-
-                            return null;
-                          },
                           key: ValueKey('username'),
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -192,7 +193,10 @@ class ProfileEditScreen extends StatelessWidget {
                                 color: Colors.amber,
                               ),
                             ),
-                            hintText: 'Username',
+                            hintText:
+                                controller.currentUserData[0].username == ''
+                                    ? 'Unknown'
+                                    : controller.currentUserData[0].username,
                             hintStyle: TextStyle(
                               color: Colors.grey,
                             ),

@@ -49,47 +49,49 @@ class _AppDrawerState extends State<AppDrawer> {
                 child: Column(
                   children: [
                     Align(
-                        alignment: Alignment.topLeft,
-                        child: Obx(() {
-                          return controller.isLoadingUserData.value
-                              ? CupertinoActivityIndicator(
-                                  color: Colors.white,
-                                )
-                              : CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage: controller
-                                              .currentUserData.isNotEmpty &&
-                                          controller.currentUserData[0].dpUrl !=
-                                              ''
-                                      ? NetworkImage(
-                                          controller.currentUserData[0].dpUrl)
-                                      : AssetImage('assets/images/userdp.jpg')
-                                          as ImageProvider<Object>,
-                                );
-                        })),
+                      alignment: Alignment.topLeft,
+                      child: Obx(() {
+                        return controller.isLoadingUserData.value
+                            ? CupertinoActivityIndicator(
+                                color: Colors.white,
+                              )
+                            : CircleAvatar(
+                                radius: 30,
+                                backgroundImage: controller
+                                            .currentUserData.isNotEmpty &&
+                                        controller.currentUserData[0].dpUrl !=
+                                            ''
+                                    ? NetworkImage(
+                                        controller.currentUserData[0].dpUrl)
+                                    : AssetImage('assets/images/userdp.jpg')
+                                        as ImageProvider<Object>,
+                              );
+                      }),
+                    ),
                     SizedBox(
                       height: 12,
                     ),
                     Align(
-                        alignment: Alignment.topLeft,
-                        child: Obx(() {
-                          return controller.isLoadingUserData.value
-                              ? CupertinoActivityIndicator(
-                                  color: Colors.white,
-                                )
-                              : Text(
-                                  controller.currentUserData.isNotEmpty &&
-                                          controller.currentUserData[0]
-                                                  .username !=
-                                              ''
-                                      ? controller.currentUserData[0].username
-                                      : 'Unknown',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                );
-                        })),
+                      alignment: Alignment.topLeft,
+                      child: Obx(() {
+                        return controller.isLoadingUserData.value
+                            ? CupertinoActivityIndicator(
+                                color: Colors.white,
+                              )
+                            : Text(
+                                controller.currentUserData.isNotEmpty &&
+                                        controller
+                                                .currentUserData[0].username !=
+                                            ''
+                                    ? controller.currentUserData[0].username
+                                    : 'Unknown',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              );
+                      }),
+                    ),
                   ],
                 ),
               ),
@@ -107,6 +109,7 @@ class _AppDrawerState extends State<AppDrawer> {
                       alignment: Alignment.topLeft,
                       child: TextButton.icon(
                         onPressed: () {
+                          firstFetch = 0;
                           Get.to(ProfileEditScreen());
                         },
                         icon: Icon(
