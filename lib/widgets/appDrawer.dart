@@ -44,11 +44,12 @@ class _AppDrawerState extends State<AppDrawer> {
             child: Container(
               width: double.infinity,
               color: Colors.amber,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 60.0, left: 30),
-                child: Column(
-                  children: [
-                    Align(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 25),
+                    child: Align(
                       alignment: Alignment.topLeft,
                       child: Obx(() {
                         return controller.isLoadingUserData.value
@@ -68,10 +69,13 @@ class _AppDrawerState extends State<AppDrawer> {
                               );
                       }),
                     ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Align(
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 25),
+                    child: Align(
                       alignment: Alignment.topLeft,
                       child: Obx(() {
                         return controller.isLoadingUserData.value
@@ -92,8 +96,8 @@ class _AppDrawerState extends State<AppDrawer> {
                               );
                       }),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

@@ -149,7 +149,7 @@ class _AuthScreenState extends State<AuthScreen> {
               children: [
                 // design
                 SizedBox(
-                  height: 50,
+                  height: 40,
                 ),
 
                 Align(
@@ -197,7 +197,6 @@ class _AuthScreenState extends State<AuthScreen> {
                         SizedBox(height: 16),
                         if (!_isPhone.value)
                           Container(
-                            height: 50,
                             child: TextFormField(
                               style: TextStyle(color: Colors.black),
                               cursorColor: Colors.amber,
@@ -248,7 +247,6 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                         if (!_isLogin.value && !_isPhone.value)
                           Container(
-                            height: 50,
                             child: TextFormField(
                               style: TextStyle(color: Colors.black),
                               cursorColor: Colors.amber,
@@ -293,7 +291,6 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                         if (!_isPhone.value)
                           Container(
-                            height: 50,
                             child: TextFormField(
                               style: TextStyle(color: Colors.black),
                               cursorColor: Colors.amber,
@@ -335,7 +332,6 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                         if (_isPhone.value)
                           Container(
-                            height: 50,
                             child: TextFormField(
                               style: TextStyle(color: Colors.black),
                               cursorColor: Colors.amber,
