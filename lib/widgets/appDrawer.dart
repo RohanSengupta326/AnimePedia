@@ -97,7 +97,6 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
             ),
           ),
-          Divider(),
           SizedBox(height: 16),
           Expanded(
               flex: 3,

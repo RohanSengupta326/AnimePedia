@@ -27,16 +27,23 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     // print(Get.width);
     final ThemeData theme = ThemeData();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-      ),
+      // darkTheme: ThemeData(
+      //   brightness: Brightness.dark,
+      // ),
       title: 'Series',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        // scaffoldBackgroundColor: Colors.black,
-      ).copyWith(
+
+              // scaffoldBackgroundColor: Colors.black,
+              )
+          .copyWith(
         // backgroundColor: Colors.black,
         // brightness: Brightness.dark,
         colorScheme: theme.colorScheme.copyWith(

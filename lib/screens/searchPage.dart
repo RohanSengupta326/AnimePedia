@@ -56,6 +56,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.grey.shade900,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -66,6 +67,9 @@ class _SearchPageState extends State<SearchPage> {
                 scrollPadding: const EdgeInsets.all(8),
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
                   focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                   ),
@@ -77,6 +81,7 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
                   hintText: 'Search',
+                  hintStyle: TextStyle(color: Colors.white),
                   icon: const Icon(Icons.search, color: Colors.white),
                 ),
                 cursorColor: Colors.white,

@@ -154,6 +154,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade900,
       drawer: AppDrawer(),
       appBar: AppBar(
         titleSpacing: 0,

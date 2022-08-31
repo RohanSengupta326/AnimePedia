@@ -134,6 +134,7 @@ class ProfileEditScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade900,
       appBar: AppBar(
         titleSpacing: 0,
         backgroundColor: Colors.amber,

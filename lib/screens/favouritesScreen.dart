@@ -115,19 +115,13 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade900,
       appBar: AppBar(
         titleSpacing: 0,
         backgroundColor: Colors.amber,
-        title: TextButton(
-          onPressed: () {
-            scrollController.animateTo(0,
-                duration: const Duration(seconds: 1),
-                curve: Curves.fastOutSlowIn);
-          },
-          child: const Text(
-            'Your Favourite Animes',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-          ),
+        title: Text(
+          'Favourites',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: RefreshIndicator(

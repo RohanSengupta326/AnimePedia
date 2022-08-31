@@ -113,6 +113,7 @@ class AnimeDetailPage extends StatelessWidget {
             0);
 
     return Scaffold(
+      backgroundColor: Colors.grey.shade900,
       appBar: AppBar(
         titleSpacing: 0,
         backgroundColor: Colors.amber,
