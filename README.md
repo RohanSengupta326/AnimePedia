@@ -13,7 +13,6 @@ This project is currently ongoing, many more features are to be added, if you ar
 **Flutter** is light weight, easy to implement and fast, thats why Flutter has been my choice to develop this application. 
 
 ### Features to be added : 
-- User favourite section to store your favourite anime to watch later
 - share and suggest anime to your friends
 
 If people like it we may even be able to create an Anime streaming service which is in high need right now in our society for all our fellow anime lovers cause as an Anime lover myself I know how hard it is to watch anime on third party websites with ads. So be free to let me know your thoughts, we can even collab to make it possible. 
