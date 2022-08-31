@@ -135,6 +135,7 @@ class ProfileEditScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        titleSpacing: 0,
         backgroundColor: Colors.amber,
         title: Text('Edit Profile'),
       ),
