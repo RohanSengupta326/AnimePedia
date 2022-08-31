@@ -56,7 +56,6 @@ samples, guidance on mobile development, and a full API reference.
 ## Screenshots : 
 
 <p>
-<img src="https://user-images.githubusercontent.com/64458868/186164556-9803227d-71d7-4491-a41f-f211f66a5b25.png" alt="Splash View" width="200">
 <img src="https://user-images.githubusercontent.com/64458868/186164572-3c2fe447-6410-4e4d-a0ea-962f07f79fc6.png" alt="Splash View" width="200">
 <img src="https://user-images.githubusercontent.com/64458868/186164588-f48d8d8e-663b-40da-816a-deb9f1b7a961.png" alt="Splash View" width="200">
 <img src="https://user-images.githubusercontent.com/64458868/186164592-31d92fe6-7813-4486-a4fc-66268a40a50f.png" alt="Splash View" width="200">
@@ -66,18 +65,8 @@ samples, guidance on mobile development, and a full API reference.
 <img src="https://user-images.githubusercontent.com/64458868/186164624-b5054010-8ad5-4fb8-90a2-6b9e87b5bcb2.png" alt="Splash View" width="200">
 <img src="https://user-images.githubusercontent.com/64458868/186164627-a0d4bc44-b579-4b69-a73a-6a563678ac8c.png" alt="Splash View" width="200">
 <img src="https://user-images.githubusercontent.com/64458868/186164633-68c02f3e-1a4f-435e-a245-75a11a0d24d4.png" alt="Splash View" width="200">
+<img src="https://user-images.githubusercontent.com/64458868/187676310-b5fa2d1a-5944-4288-821f-3a52573e67bc.png" alt="Splash View" width="200">
+<img src="https://user-images.githubusercontent.com/64458868/187676301-38b7e708-5c94-4598-b90c-ff4fb1c9843b.png" alt="Splash View" width="200">
+<img src="https://user-images.githubusercontent.com/64458868/187676296-137c40fb-e13e-4f64-a519-b0776c8a4401.png" alt="Splash View" width="200">
+<img src="https://user-images.githubusercontent.com/64458868/187676276-9cb58b3d-7c6a-4d45-89fb-5387c43018e5.png" alt="Splash View" width="200">
 </p>
-
-![Screenshot 2022-08-23 at 6 27 44 PM](https://user-images.githubusercontent.com/64458868/186164556-9803227d-71d7-4491-a41f-f211f66a5b25.png)
-![Screenshot 2022-08-23 at 6 27 57 PM](https://user-images.githubusercontent.com/64458868/186164572-3c2fe447-6410-4e4d-a0ea-962f07f79fc6.png)
-![Screenshot 2022-08-23 at 6 28 05 PM](https://user-images.githubusercontent.com/64458868/186164588-f48d8d8e-663b-40da-816a-deb9f1b7a961.png)
-![Screenshot 2022-08-23 at 6 29 05 PM](https://user-images.githubusercontent.com/64458868/186164592-31d92fe6-7813-4486-a4fc-66268a40a50f.png)
-![Screenshot 2022-08-23 at 6 29 35 PM](https://user-images.githubusercontent.com/64458868/186164604-5b8cbb5a-0f68-4b79-b963-068563b5a240.png)
-![Screenshot 2022-08-23 at 6 29 49 PM](https://user-images.githubusercontent.com/64458868/186164612-6add409e-7965-48c1-af47-3b97c8b027f3.png)
-![Screenshot 2022-08-23 at 6 30 02 PM](https://user-images.githubusercontent.com/64458868/186164618-b800a67b-9e54-4f26-9c06-ada64eca5140.png)
-![Screenshot 2022-08-23 at 6 30 09 PM](https://user-images.githubusercontent.com/64458868/186164624-b5054010-8ad5-4fb8-90a2-6b9e87b5bcb2.png)
-![Screenshot 2022-08-23 at 6 30 24 PM](https://user-images.githubusercontent.com/64458868/186164627-a0d4bc44-b579-4b69-a73a-6a563678ac8c.png)
-![Screenshot 2022-08-23 at 6 30 53 PM](https://user-images.githubusercontent.com/64458868/186164633-68c02f3e-1a4f-435e-a245-75a11a0d24d4.png)
-
-
-
