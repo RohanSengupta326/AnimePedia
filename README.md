@@ -6,8 +6,8 @@ This project is currently ongoing, many more features are to be added, if you ar
 
 ### Tech Stack Used : 
 
-- **Front-End - Flutter & Dart**
-- **Back-End - Firebase**
+- **Flutter & Dart**
+- **Firebase**
 - **API - https://jikan.moe/**
 
 **Flutter** is light weight, easy to implement and fast, thats why Flutter has been my choice to develop this application. 
