@@ -47,7 +47,7 @@ class _AppDrawerState extends State<AppDrawer> {
     if (isInstalled) {
       AndroidIntent intent = AndroidIntent(
         action: 'action_view',
-        data: url as String?,
+        data: url.toString(),
       );
       await intent.launch();
     } else {
