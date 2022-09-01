@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,72 +35,73 @@ class _AppDrawerState extends State<AppDrawer> {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: Colors.white,
-      child: Column(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              width: double.infinity,
-              color: Colors.amber,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 25),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Obx(() {
-                        return controller.isLoadingUserData.value
-                            ? CupertinoActivityIndicator(
-                                color: Colors.white,
-                              )
-                            : CircleAvatar(
-                                radius: 30,
-                                backgroundImage: controller
-                                            .currentUserData.isNotEmpty &&
-                                        controller.currentUserData[0].dpUrl !=
-                                            ''
-                                    ? NetworkImage(
-                                        controller.currentUserData[0].dpUrl)
-                                    : AssetImage('assets/images/userdp.jpg')
-                                        as ImageProvider<Object>,
-                              );
-                      }),
+      child: Container(
+        margin: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Container(
+                color: Colors.amber,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 25),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Obx(() {
+                          return controller.isLoadingUserData.value
+                              ? CupertinoActivityIndicator(
+                                  color: Colors.white,
+                                )
+                              : CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: controller
+                                              .currentUserData.isNotEmpty &&
+                                          controller.currentUserData[0].dpUrl !=
+                                              ''
+                                      ? NetworkImage(
+                                          controller.currentUserData[0].dpUrl)
+                                      : AssetImage('assets/images/userdp.jpg')
+                                          as ImageProvider<Object>,
+                                );
+                        }),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 25),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Obx(() {
-                        return controller.isLoadingUserData.value
-                            ? CupertinoActivityIndicator(
-                                color: Colors.white,
-                              )
-                            : Text(
-                                controller.currentUserData.isNotEmpty &&
-                                        controller
-                                                .currentUserData[0].username !=
-                                            ''
-                                    ? controller.currentUserData[0].username
-                                    : 'Unknown',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              );
-                      }),
+                    SizedBox(
+                      height: 12,
                     ),
-                  ),
-                ],
+                    Container(
+                      margin: EdgeInsets.only(left: 25),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Obx(() {
+                          return controller.isLoadingUserData.value
+                              ? CupertinoActivityIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text(
+                                  controller.currentUserData.isNotEmpty &&
+                                          controller.currentUserData[0]
+                                                  .username !=
+                                              ''
+                                      ? controller.currentUserData[0].username
+                                      : 'Unknown',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                );
+                        }),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 16),
-          Expanded(
+            SizedBox(height: 16),
+            Expanded(
               flex: 3,
               child: Padding(
                 padding: const EdgeInsets.only(left: 16.0),
@@ -155,8 +154,10 @@ class _AppDrawerState extends State<AppDrawer> {
                     ),
                   ],
                 ),
-              ))
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
