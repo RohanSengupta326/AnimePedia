@@ -7,8 +7,6 @@ import 'package:get/get.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'errorPage.dart';
 
-import 'package:flutter/services.dart';
-
 import 'widgets/appDrawer.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,12 +17,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final controller = Get.put(SeriesData());
   String _error = '';
+  // to store error message
   int i = 1;
+  // first page fetch with this variable, it increases to call more 2nd, 3rd ..and so on pages
   int cols = GetPlatform.isDesktop ? 4 : 2;
   ScrollController scrollController = ScrollController();
+  // to read scroll position
   RxBool showButton = false.obs;
   // to show, go to top button or not
   int firstFetch = 0;
+  // once fetched wont fetch same data multiple times
 
   void fetch([bool? onInternetGone]) {
     // if trying again after internet gone, start from first page
@@ -61,6 +63,7 @@ class _HomePageState extends State<HomePage> {
       double showOffSet = 10.0;
 
       if (scrollController.offset > showOffSet) {
+        // after scrolling down upto an extent button shows up to go to top
         showButton.value = true;
       } else {
         showButton.value = false;
@@ -103,6 +106,7 @@ class _HomePageState extends State<HomePage> {
                 isLoading: controller.isLoading2.value,
                 onEndOfPage: () {
                   i++;
+                  // increase this variable to fetch next page
                   return fetch();
                 },
                 child: RefreshIndicator(

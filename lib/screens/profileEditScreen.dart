@@ -27,6 +27,7 @@ class ProfileEditScreen extends StatelessWidget {
       if (_pickedImage == null &&
           (controller.currentUserData.isEmpty &&
               controller.currentUserData[0].dpUrl == '')) {
+        // if picked image null and was also null before then pick one now
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -68,12 +69,17 @@ class ProfileEditScreen extends StatelessWidget {
         XFile? userDp;
 
         userDp = _pickedImage != null ? _pickedImage as XFile : null;
+        // picked image can be null if previously there was some image already
 
         if (_userName == '' && userDp != null) {
+          // selected profile picture but not new username
+
           _userName = controller.currentUserData[0].username == ''
               ? 'Unknown'
               : controller.currentUserData[0].username;
+          // if previously there was a username then save that else save unknown
         } else if (_userName == '' && userDp == null) {
+          // if both are unchanged then go back dont save
           return;
         }
 

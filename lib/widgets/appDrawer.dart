@@ -17,6 +17,8 @@ class AppDrawer extends StatefulWidget {
 class _AppDrawerState extends State<AppDrawer> {
   final SeriesData controller = Get.find();
   static int firstFetch = 1;
+  // dont fetch user profile data more than once everytime open this page
+
   final String developerInstaUrl = 'https://www.instagram.com/rohaaansen/';
   final String developerTwitterUrl = 'https://twitter.com/rohan_sen132';
   final String developerLinkedInUrl =

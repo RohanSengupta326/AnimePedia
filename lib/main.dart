@@ -13,7 +13,7 @@ void main() async {
     ),
   );
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(); // initializing firebase
   runApp(
     MyApp(), // Wrap your app
   );
@@ -27,27 +27,18 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    // print(Get.width);
     final ThemeData theme = ThemeData();
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    // only available on portrait mode
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      // darkTheme: ThemeData(
-      //   brightness: Brightness.dark,
-      // ),
       title: 'Series',
-      theme: ThemeData(
-
-              // scaffoldBackgroundColor: Colors.black,
-              )
-          .copyWith(
-        // backgroundColor: Colors.black,
-        // brightness: Brightness.dark,
+      theme: ThemeData().copyWith(
         colorScheme: theme.colorScheme.copyWith(
           secondary: Colors.white,
         ),

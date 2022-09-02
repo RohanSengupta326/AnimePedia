@@ -21,9 +21,9 @@ class _AuthScreenState extends State<AuthScreen> {
   String _userPassword = '';
   String _phone = '';
   RxBool _isLogin = false.obs;
-  RxBool _isPhone = false.obs;
+  RxBool _isPhone = false.obs; // login with phone or not
 
-  XFile? _pickedImage;
+  XFile? _pickedImage; // picked user profile pic
 
   void onSubmitted(BuildContext context) {
     final isValid = _formKey.currentState!.validate();
@@ -32,6 +32,7 @@ class _AuthScreenState extends State<AuthScreen> {
     if (isValid) {
       _formKey.currentState!.save();
       if (_isPhone.value) {
+        // if login with phone show otp check modal sheet
         showModalBottomSheet(
           backgroundColor: Colors.white,
           context: context,
@@ -40,7 +41,9 @@ class _AuthScreenState extends State<AuthScreen> {
           }),
         );
       } else {
+        // else sign in with email
         if (_pickedImage == null && !_isLogin.value) {
+          // not registered user and also user dp picked null then alert user
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -79,13 +82,19 @@ class _AuthScreenState extends State<AuthScreen> {
             },
           );
         } else {
+          // picked image not null
           XFile? userDp;
           if (!_isLogin.value) {
+            // if not logging in store picked image else send null image if phone no login
             userDp = _pickedImage as XFile;
           }
           controller
-              .authUser(_userEmail.trim(), _userName.trim(),
-                  _userPassword.trim(), _isLogin.value, userDp)
+              .authUser(
+                  _userEmail.trim(),
+                  _userName.trim(),
+                  _userPassword.trim(),
+                  _isLogin.value,
+                  userDp) // calling provider function to sign user in
               .catchError(
             (error) {
               showDialog(
@@ -134,7 +143,7 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void imagePicker(XFile? image) {
-    _pickedImage = image;
+    _pickedImage = image; // storing picked image in variable
   }
 
   @override
@@ -193,9 +202,11 @@ class _AuthScreenState extends State<AuthScreen> {
                       //dont take as much space as possible but as minimum as needed
                       children: <Widget>[
                         if (!_isLogin.value && !_isPhone.value)
+                          // registering user and not phone log in so upload image section else not
                           UploadImage(imagePicker),
                         SizedBox(height: 16),
-                        if (!_isPhone.value)
+                        if (!_isPhone
+                            .value) // if not phone log in show email section
                           Container(
                             child: TextFormField(
                               style: TextStyle(color: Colors.black),

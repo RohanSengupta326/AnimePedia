@@ -49,13 +49,12 @@ class _SeriesViewState extends State<SeriesView> {
             backgroundColor: Colors.white,
             title: Center(
               child: Text(
-                widget.title ?? '', 
+                widget.title ?? '',
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 softWrap: true,
-                
                 style: const TextStyle(
-                  color: /* Colors.white */ Colors.black,
+                  color: Colors.black,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   overflow: TextOverflow.ellipsis,

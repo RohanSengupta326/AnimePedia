@@ -36,6 +36,7 @@ class AnimeDetailPage extends StatelessWidget {
       this.trailerUrl}) {}
 
   Future<void> _launchUrl() async {
+    // to open trailer on youtube
     final Uri url = Uri.parse(trailerUrl ?? '');
     if (!await launchUrl(
       url,
@@ -47,6 +48,7 @@ class AnimeDetailPage extends StatelessWidget {
   }
 
   void updateFav(BuildContext context) {
+    // add / remove from favourites list
     controller
         .updateFavourites(
             image,
@@ -65,6 +67,7 @@ class AnimeDetailPage extends StatelessWidget {
       isData.value = (controller.favourites
               .indexWhere((element) => element.title == title) <
           0);
+      // is in favourites list or not after calling update favourites function
     }).catchError((err) {
       showDialog(
         context: context,
@@ -111,6 +114,7 @@ class AnimeDetailPage extends StatelessWidget {
     isData.value =
         (controller.favourites.indexWhere((element) => element.title == title) <
             0);
+    // after creating build check anime in favourite list or not
 
     return Scaffold(
       backgroundColor: Colors.grey.shade900,

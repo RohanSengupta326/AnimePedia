@@ -7,6 +7,7 @@ import '../api/seriesdata.dart';
 
 class OtpCheck extends StatefulWidget {
   String _phone;
+  // phone no
 
   OtpCheck(this._phone);
 
@@ -16,7 +17,8 @@ class OtpCheck extends StatefulWidget {
 
 class _OtpCheckState extends State<OtpCheck> {
   final SeriesData controller = Get.find();
-  RxString verificationCode = '222222'.obs;
+  RxString verificationCode =
+      '222222'.obs; //default verification code for demo no in backend
   late UserCredential userCredential;
   RxBool _isLoading = false.obs;
 
@@ -27,7 +29,7 @@ class _OtpCheckState extends State<OtpCheck> {
       verificationCompleted: (PhoneAuthCredential credential) async {
         _isLoading.value = true;
         userCredential = await FirebaseAuth.instance
-            .signInWithCredential(credential)
+            .signInWithCredential(credential) // sign in with phone no
             .catchError((err) {
           showDialog(
             context: context,
@@ -75,11 +77,14 @@ class _OtpCheckState extends State<OtpCheck> {
       },
       codeSent: (String verificationId, forceResendingToken) {
         verificationCode.value = verificationId;
+        // if enetered manually matching otp
       },
       codeAutoRetrievalTimeout: (String verificationId) {
         verificationCode.value = verificationId;
+        // if code time out send new code and do same thing
       },
       timeout: Duration(seconds: 60),
+      // code invalid after 60 seconds
     )
         .catchError((err) {
       _isLoading.value = false;
@@ -175,8 +180,9 @@ class _OtpCheckState extends State<OtpCheck> {
                       color: Colors.amber,
                     )))
                   : OtpTextField(
+                      // package to create otp boxes
                       textStyle: TextStyle(color: Colors.black),
-                      numberOfFields: 6,
+                      numberOfFields: 6, // 6 otp boxes
                       borderColor: Colors.amber,
                       //set to true to show as box or false to show as dash
                       showFieldAsBox: true,
@@ -187,6 +193,7 @@ class _OtpCheckState extends State<OtpCheck> {
 
                       //runs when every textfield is filled
                       onSubmit: ((value) async {
+                        // on filling the field signin function is called, dont have to click submit
                         FirebaseAuth.instance
                             .signInWithCredential(
                           PhoneAuthProvider.credential(
