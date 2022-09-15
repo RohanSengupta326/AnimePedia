@@ -128,7 +128,7 @@ class SeriesData extends GetxController {
 
     var apiCall = ApiKey().animeSearchUrl;
 
-    String urL = '$apiCall$animeName&limit=10';
+    String urL = '$apiCall$animeName&sfw';
 
     var url = Uri.parse(
       urL,
