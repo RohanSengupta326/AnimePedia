@@ -34,6 +34,7 @@ class _AuthScreenState extends State<AuthScreen> {
       if (_isPhone.value) {
         // if login with phone show otp check modal sheet
         showModalBottomSheet(
+          isDismissible: false,
           backgroundColor: Colors.white,
           context: context,
           builder: ((context) {
