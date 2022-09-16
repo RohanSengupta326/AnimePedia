@@ -7,12 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:751434618295:android:4cad28b7b0205d28a4c432",
+        "mobilesdk_app_id": "1:751434618295:android:11e669bbd615eae8a4c432",
         "android_client_info": {
-          "package_name": "com.example.animepedia"
+          "package_name": "com.rohan.AnimePedia"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "751434618295-c15egvadtihhnk55nnrbovpmjcnjpv25.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rohan.AnimePedia",
+            "certificate_hash": "2ee113558ed9499e5ac39554c1e39107cdc84364"
+          }
+        },
         {
           "client_id": "751434618295-vejk8uqqcb1do024pbu1uir6t110t1s7.apps.googleusercontent.com",
           "client_type": 3
