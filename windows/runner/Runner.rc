@@ -93,7 +93,7 @@ BEGIN
             VALUE "FileDescription", "series" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "series" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022 com.rohan. All rights reserved." "\0"
             VALUE "OriginalFilename", "series.exe" "\0"
             VALUE "ProductName", "series" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
