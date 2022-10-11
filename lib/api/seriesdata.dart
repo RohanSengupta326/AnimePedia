@@ -55,7 +55,7 @@ class SeriesData extends GetxController {
 
     var apiCall = ApiKey().urL;
 
-    String urL = '$apiCall$pageNo'; // your api here
+    String urL = '$apiCall$pageNo';
 
     var url = Uri.parse(
       urL,
