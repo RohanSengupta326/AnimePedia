@@ -4,6 +4,9 @@ Recently the Anime industry is booming all over the world, and specially in Indi
 
 This project is currently ongoing, many more features are to be added, if you are also an Anime lover or not, don't hesitate to come up and share some ideas for the app that you would like to see, it will be much appreciated. 
 
+## Download the App:
+<a href="https://play.google.com/store/apps/details?id=com.rohan.AnimePedia"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height=80px /></a>
+
 ### Tech Stack Used : 
 
 - **Flutter & Dart**
