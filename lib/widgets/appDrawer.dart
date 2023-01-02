@@ -119,7 +119,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                                   .username !=
                                               ''
                                       ? controller.currentUserData[0].username
-                                      : 'Unknown',
+                                      : 'Guest User',
                                   style: TextStyle(
                                       fontSize: 20,
                                       color: Colors.white,

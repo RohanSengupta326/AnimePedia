@@ -21,7 +21,7 @@ class _AuthScreenState extends State<AuthScreen> {
   String _userPassword = '';
   String _phone = '';
   RxBool _isLogin = false.obs;
-  RxBool _isPhone = false.obs; // login with phone or not
+  RxBool _isPhone = false.obs; // login with phone number or not
 
   XFile? _pickedImage; // picked user profile pic
 
