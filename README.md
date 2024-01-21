@@ -50,6 +50,7 @@ samples, guidance on mobile development, and a full API reference.
 
 - Clone this repository after forking using `git clone https://github.com/<username>/AnimePedia.git`.
 - `cd AnimePedia`.
+- install the required Flutter version, globally or using fvm. ( Check the version of this project in : `.fvm/fvm_config.json` )
 - `flutter pub get` to get all the dependencies.
 - change Flutter channel with command `flutter channel master`
 - run `flutter upgrade`

@@ -366,7 +366,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     color: Colors.amber,
                                   ),
                                 ),
-                                hintText: '1234567890',
+                                hintText: '+91-983629903 ( dont use +91-)',
                                 hintStyle: TextStyle(
                                   color: Colors.grey,
                                 ),
